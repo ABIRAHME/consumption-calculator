@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Garment Fabric Consumption Calculator</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#1d4ed8',
+              600: '#1e40af',
+              700: '#1e3a8a',
+              800: '#172554',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background-color: #ffffff !important; color: #000000 !important; }
+      .shadow-xl, .shadow-lg, .shadow-md, .shadow-sm { box-shadow: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen pb-12">
+
+  <!-- Header Banner -->
+  <header class="bg-gradient-to-r from-slate-900 via-brand-800 to-slate-900 text-white py-8 px-4 sm:px-8 shadow-md">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div>
+        <div class="flex items-center gap-3">
+          <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+          </svg>
+          <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">CONSUMPTION CALCULATOR</h1>
+        </div>
+        <p class="text-slate-300 text-sm mt-1">Calculated Formula or Manual Consumption Override</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-8 mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+    <!-- Left Column: Inputs -->
+    <div class="lg:col-span-5 space-y-6">
+
+      <!-- Inputs Form Card -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+        <h2 class="text-lg font-semibold text-slate-900 border-b border-slate-100 pb-3 mb-5 flex items-center gap-2">
+          <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+          </svg>
+          Input Parameters
+        </h2>
+
+        <div class="space-y-4">
+
+          <!-- Manual Consumption Override Option -->
+          <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+            <label class="flex items-center gap-2.5 cursor-pointer">
+              <input type="checkbox" id="useManualToggle" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+              <span class="text-xs font-bold text-slate-900">Use Manual Consumption Override</span>
+            </label>
+
+            <div id="manualInputContainer" class="mt-2.5 hidden">
+              <label class="block text-xs font-medium text-blue-900 mb-1" for="manualConsumption">
+                Manual Consumption
+              </label>
+              <div class="relative">
+                <input type="number" step="0.001" id="manualConsumption" value="0"
+                  class="w-full px-3 py-2 bg-white border border-blue-300 rounded-lg text-blue-950 font-bold focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                <span class="absolute right-3 top-2.5 text-xs text-blue-700 font-medium">yd/pcs</span>
+              </div>
+              <p class="text-[11px] text-blue-600 mt-1">Directly overrides calculated consumption</p>
+            </div>
+          </div>
+
+          <!-- CAD Consumption -->
+          <div id="cadInputsSection" class="transition-opacity duration-200">
+            <div>
+              <label class="block text-xs font-medium text-slate-700 mb-1" for="cadConsumption">
+                CAD Consumption <span class="text-slate-400 font-normal">(at 0% shrinkage)</span>
+              </label>
+              <div class="relative">
+                <input type="number" step="0.001" id="cadConsumption" value="0"
+                  class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                <span class="absolute right-3 top-2.5 text-xs text-slate-400 font-medium">yd/pcs</span>
+              </div>
+            </div>
+
+            <!-- CAD Width & Actual Width Grid -->
+            <div class="grid grid-cols-2 gap-4 mt-4">
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1" for="cadWidth">
+                  CAD Width
+                </label>
+                <div class="relative">
+                  <input type="number" step="0.1" id="cadWidth" value="0"
+                    class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                  <span class="absolute right-3 top-2.5 text-xs text-slate-400 font-medium">inch</span>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1" for="actualWidth">
+                  Actual Fabric Width
+                </label>
+                <div class="relative">
+                  <input type="number" step="0.1" id="actualWidth" value="0"
+                    class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                  <span class="absolute right-3 top-2.5 text-xs text-slate-400 font-medium">inch</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Length & Width Shrinkage Grid -->
+            <div class="grid grid-cols-2 gap-4 mt-4">
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1" for="lengthShrinkage">
+                  Length Shrinkage (L%)
+                </label>
+                <div class="relative">
+                  <input type="number" step="0.1" id="lengthShrinkage" value="0"
+                    class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                  <span class="absolute right-3 top-2.5 text-xs text-slate-400 font-medium">%</span>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1" for="widthShrinkage">
+                  Width Shrinkage (W%)
+                </label>
+                <div class="relative">
+                  <input type="number" step="0.1" id="widthShrinkage" value="0"
+                    class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                  <span class="absolute right-3 top-2.5 text-xs text-slate-400 font-medium">%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inhoused Fabric & Order Quantity Grid -->
+          <div class="grid grid-cols-2 gap-4 pt-2 border-t border-slate-100">
+            <div>
+              <label class="block text-xs font-medium text-emerald-800 mb-1" for="inhouseFabric">
+                In-housed Fabric
+              </label>
+              <div class="relative">
+                <input type="number" step="1" id="inhouseFabric" value="0"
+                  class="w-full px-3 py-2 bg-emerald-50/50 border border-emerald-300 rounded-lg text-emerald-950 font-bold focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm">
+                <span class="absolute right-3 top-2.5 text-xs text-emerald-700 font-medium">yd</span>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-700 mb-1" for="orderQty">
+                Order Quantity
+              </label>
+              <div class="relative">
+                <input type="number" step="1" id="orderQty" value="0"
+                  class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                <span class="absolute right-3 top-2.5 text-xs text-slate-400 font-medium">pcs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Results -->
+    <div class="lg:col-span-7 space-y-6">
+
+      <!-- Main Results Card -->
+      <div class="bg-gradient-to-br from-slate-900 via-brand-800 to-slate-900 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-700/60 pb-4 mb-4 gap-2">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-wider text-blue-300">Automatic Results</span>
+            <h2 class="text-xl font-bold">Final Fabric Consumption</h2>
+          </div>
+          <span id="badgeConsumptionSource" class="bg-amber-400/20 text-amber-300 text-xs px-2.5 py-1 rounded-full border border-amber-400/30 font-semibold">
+            Calculated Formula
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+          <div>
+            <div class="text-4xl sm:text-5xl font-black tracking-tight text-white flex items-baseline gap-2">
+              <span id="resActualConsumption">0.000</span>
+              <span class="text-lg font-medium text-blue-300">yd/pcs</span>
+            </div>
+            <p class="text-xs text-slate-300 mt-1">Final required consumption per garment piece</p>
+          </div>
+
+          <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/10 space-y-2">
+            <div class="flex justify-between text-xs">
+              <span class="text-slate-300">Meter / pcs:</span>
+              <span id="resConsumptionMeter" class="font-bold text-white">0.000 m</span>
+            </div>
+            <div class="flex justify-between text-xs">
+              <span class="text-slate-300">Per Dozen (12 pcs):</span>
+              <span id="resConsumptionDozen" class="font-bold text-white">0.000 yd</span>
+            </div>
+            <div class="flex justify-between text-xs">
+              <span class="text-slate-300">Per 100 pcs:</span>
+              <span id="resConsumption100" class="font-bold text-white">0.000 yd</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- In-housed Fabric Production Capacity Card -->
+      <div class="bg-gradient-to-r from-emerald-900 to-teal-800 rounded-2xl p-6 text-white shadow-md relative overflow-hidden">
+        <div class="flex items-center justify-between border-b border-emerald-700/60 pb-3 mb-4">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+            </svg>
+            <h3 class="text-base font-bold text-white">Production from In-Housed Fabric</h3>
+          </div>
+          <span class="bg-emerald-500/20 text-emerald-200 text-xs px-2.5 py-1 rounded-full border border-emerald-400/30 font-medium">
+            Stock Yield
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+          <div>
+            <span class="text-xs text-emerald-200 block uppercase font-medium">Garment Pieces Possible</span>
+            <div class="text-3xl sm:text-4xl font-extrabold text-white mt-0.5">
+              <span id="resPossiblePcs">0</span> <span class="text-lg font-medium text-emerald-300">pcs</span>
+            </div>
+            <p class="text-xs text-emerald-200 mt-1">From <span id="lblInhouseYards" class="font-bold text-white">0</span> yards of in-housed fabric</p>
+          </div>
+
+          <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/10 space-y-2">
+            <div class="flex justify-between text-xs">
+              <span class="text-emerald-100">Equivalent Dozens:</span>
+              <span id="resPossibleDozens" class="font-bold text-white">0.0 dozen</span>
+            </div>
+            <div class="flex justify-between text-xs">
+              <span class="text-emerald-100">Stock Fabric Balance:</span>
+              <span id="resStockBalance" class="font-bold text-emerald-300">0.0 yd surplus</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom Target Pieces Fabric Estimator Card -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+        <h3 class="text-base font-semibold text-slate-900 border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+            </svg>
+            <span>Custom Garment Pieces Fabric Estimator</span>
+          </div>
+          <span class="text-xs text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full font-semibold border border-indigo-100">
+            Manual Pieces Calculation
+          </span>
+        </h3>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1" for="customTargetPcs">
+              Enter Number of Pieces (pcs)
+            </label>
+            <div class="relative">
+              <input type="number" step="1" id="customTargetPcs" value="0"
+                class="w-full px-3 py-2.5 bg-indigo-50/40 border border-indigo-200 rounded-xl text-indigo-950 font-bold focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-base sm:text-lg">
+              <span class="absolute right-4 top-3 text-xs text-indigo-700 font-bold uppercase">pcs</span>
+            </div>
+            <p class="text-[11px] text-slate-500 mt-1">Calculates exact fabric needed based on active consumption</p>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+            <div class="bg-indigo-50/70 p-3 rounded-xl border border-indigo-100">
+              <span class="text-[10px] text-indigo-700 uppercase font-semibold block">Fabric Needed</span>
+              <span id="resCustomReqYards" class="text-lg font-black text-indigo-950">0.0 yd</span>
+              <span id="resCustomReqMeters" class="text-[11px] text-indigo-700 font-medium block">0.0 m</span>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+              <span class="text-[10px] text-slate-500 uppercase font-semibold block">Dozens</span>
+              <span id="resCustomDozens" class="text-base font-bold text-slate-900">0.0</span>
+              <span class="text-[11px] text-slate-400 block">dozen</span>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+              <span class="text-[10px] text-slate-500 uppercase font-semibold block">Active Rate</span>
+              <span id="resCustomActiveRate" class="text-base font-bold text-slate-900">0.000</span>
+              <span class="text-[11px] text-slate-400 block">yd/pcs</span>
+            </div>
+            <div class="bg-blue-50 p-3 rounded-xl border border-blue-100">
+              <span class="text-[10px] text-blue-700 uppercase font-semibold block">Rolls (100yd)</span>
+              <span id="resCustomRolls" class="text-base font-bold text-blue-900">0 Rolls</span>
+              <span class="text-[11px] text-blue-600 block">100 yd/roll</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Parameter Breakdown Table Card -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+        <h3 class="text-base font-semibold text-slate-900 border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
+          <span>Detailed Parameter Breakdown</span>
+          <button id="btnPrint" class="no-print text-xs text-slate-600 hover:text-blue-600 flex items-center gap-1 font-medium transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+            </svg>
+            Print Summary
+          </button>
+        </h3>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-semibold text-[10px] tracking-wider">
+                <th class="py-2.5 px-3">Output Parameter</th>
+                <th class="py-2.5 px-3">Calculated Value</th>
+                <th class="py-2.5 px-3">Unit</th>
+                <th class="py-2.5 px-3">Formula / Notes</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-slate-700">
+              <tr id="rowEffWidth">
+                <td class="py-2.5 px-3 font-medium">Effective Fabric Width</td>
+                <td id="resEffectiveWidth" class="py-2.5 px-3 font-bold text-slate-900">0.000</td>
+                <td class="py-2.5 px-3 text-slate-400">inch</td>
+                <td class="py-2.5 px-3 text-slate-500">Actual Width − Width Shrinkage %</td>
+              </tr>
+              <tr id="rowInterAnswer">
+                <td class="py-2.5 px-3 font-medium">Intermediate Answer</td>
+                <td id="resIntermediateAnswer" class="py-2.5 px-3 font-bold text-slate-900">0.000</td>
+                <td class="py-2.5 px-3 text-slate-400">yd/pcs</td>
+                <td class="py-2.5 px-3 text-slate-500">(CAD Consumption × CAD Width) ÷ Effective Width</td>
+              </tr>
+              <tr id="rowLengthAddition">
+                <td class="py-2.5 px-3 font-medium">Length Shrinkage Addition (+L%)</td>
+                <td id="resLengthAddition" class="py-2.5 px-3 font-bold text-slate-900">0.000</td>
+                <td class="py-2.5 px-3 text-slate-400">yd/pcs</td>
+                <td class="py-2.5 px-3 text-slate-500">Intermediate Answer × Length Shrinkage %</td>
+              </tr>
+              <tr class="bg-blue-50/70 font-semibold text-blue-950">
+                <td class="py-2.5 px-3">Final Consumption</td>
+                <td id="resActualConsumptionRow" class="py-2.5 px-3 font-bold text-blue-700">0.000</td>
+                <td class="py-2.5 px-3 text-blue-600">yd/pcs</td>
+                <td id="noteFinalConsumption" class="py-2.5 px-3 text-blue-800">Intermediate Answer + Length Shrinkage %</td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-medium">Consumption per Dozen</td>
+                <td id="resConsumptionDozenRow" class="py-2.5 px-3 font-bold text-slate-900">0.000</td>
+                <td class="py-2.5 px-3 text-slate-400">yd/dozen</td>
+                <td class="py-2.5 px-3 text-slate-500">12 pcs basis</td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-medium">Consumption per 100 pcs</td>
+                <td id="resConsumption100Row" class="py-2.5 px-3 font-bold text-slate-900">0.000</td>
+                <td class="py-2.5 px-3 text-slate-400">yd/100 pcs</td>
+                <td class="py-2.5 px-3 text-slate-500">100 pcs basis</td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-medium">Consumption in Meter</td>
+                <td id="resConsumptionMeterRow" class="py-2.5 px-3 font-bold text-slate-900">0.000</td>
+                <td class="py-2.5 px-3 text-slate-400">m/pcs</td>
+                <td class="py-2.5 px-3 text-slate-500">1 yd = 0.9144 m</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- JavaScript Logic -->
+  <script>
+    // DOM Elements
+    const useManualToggle = document.getElementById('useManualToggle');
+    const manualInputContainer = document.getElementById('manualInputContainer');
+    const manualConsumptionInput = document.getElementById('manualConsumption');
+    const cadInputsSection = document.getElementById('cadInputsSection');
+
+    const cadConsumptionInput = document.getElementById('cadConsumption');
+    const cadWidthInput = document.getElementById('cadWidth');
+    const actualWidthInput = document.getElementById('actualWidth');
+    const lengthShrinkageInput = document.getElementById('lengthShrinkage');
+    const widthShrinkageInput = document.getElementById('widthShrinkage');
+    const inhouseFabricInput = document.getElementById('inhouseFabric');
+    const orderQtyInput = document.getElementById('orderQty');
+    const customTargetPcsInput = document.getElementById('customTargetPcs');
+    const btnPrint = document.getElementById('btnPrint');
+
+    // Output elements
+    const badgeConsumptionSource = document.getElementById('badgeConsumptionSource');
+    const resActualConsumption = document.getElementById('resActualConsumption');
+    const resConsumptionMeter = document.getElementById('resConsumptionMeter');
+    const resConsumptionDozen = document.getElementById('resConsumptionDozen');
+    const resConsumption100 = document.getElementById('resConsumption100');
+
+    const resPossiblePcs = document.getElementById('resPossiblePcs');
+    const resPossibleDozens = document.getElementById('resPossibleDozens');
+    const resStockBalance = document.getElementById('resStockBalance');
+    const lblInhouseYards = document.getElementById('lblInhouseYards');
+
+    // Custom Pcs Estimator Outputs
+    const resCustomReqYards = document.getElementById('resCustomReqYards');
+    const resCustomReqMeters = document.getElementById('resCustomReqMeters');
+    const resCustomDozens = document.getElementById('resCustomDozens');
+    const resCustomActiveRate = document.getElementById('resCustomActiveRate');
+    const resCustomRolls = document.getElementById('resCustomRolls');
+
+    const rowEffWidth = document.getElementById('rowEffWidth');
+    const rowInterAnswer = document.getElementById('rowInterAnswer');
+    const rowLengthAddition = document.getElementById('rowLengthAddition');
+
+    const resEffectiveWidth = document.getElementById('resEffectiveWidth');
+    const resIntermediateAnswer = document.getElementById('resIntermediateAnswer');
+    const resLengthAddition = document.getElementById('resLengthAddition');
+
+    const resActualConsumptionRow = document.getElementById('resActualConsumptionRow');
+    const resConsumptionDozenRow = document.getElementById('resConsumptionDozenRow');
+    const resConsumption100Row = document.getElementById('resConsumption100Row');
+    const resConsumptionMeterRow = document.getElementById('resConsumptionMeterRow');
+    const noteFinalConsumption = document.getElementById('noteFinalConsumption');
+
+    // Toggle Manual Consumption Override
+    useManualToggle.addEventListener('change', () => {
+      if (useManualToggle.checked) {
+        manualInputContainer.classList.remove('hidden');
+        cadInputsSection.classList.add('opacity-50');
+        badgeConsumptionSource.textContent = "Manual Override";
+        badgeConsumptionSource.className = "bg-blue-500/30 text-blue-200 text-xs px-2.5 py-1 rounded-full border border-blue-400/40 font-semibold";
+      } else {
+        manualInputContainer.classList.add('hidden');
+        cadInputsSection.classList.remove('opacity-50');
+        badgeConsumptionSource.textContent = "Calculated Formula";
+        badgeConsumptionSource.className = "bg-amber-400/20 text-amber-300 text-xs px-2.5 py-1 rounded-full border border-amber-400/30 font-semibold";
+      }
+      calculateConsumption();
+    });
+
+    // Formula Calculation
+    function calculateConsumption() {
+      const isManual = useManualToggle.checked;
+      const C_cad = parseFloat(cadConsumptionInput.value) || 0;
+      const W_cad = parseFloat(cadWidthInput.value) || 0;
+      const W_act = parseFloat(actualWidthInput.value) || 0;
+      const S_L = parseFloat(lengthShrinkageInput.value) || 0;
+      const S_W = parseFloat(widthShrinkageInput.value) || 0;
+      const inhouseYards = parseFloat(inhouseFabricInput.value) || 0;
+      const orderQty = parseFloat(orderQtyInput.value) || 0;
+      const manualVal = parseFloat(manualConsumptionInput.value) || 0;
+      const customPcs = parseFloat(customTargetPcsInput.value) || 0;
+
+      let finalConsumption = 0;
+      let effectiveWidth = 0;
+      let intermediateAnswer = 0;
+      let lengthAddition = 0;
+
+      if (isManual) {
+        finalConsumption = manualVal;
+        rowEffWidth.classList.add('opacity-30');
+        rowInterAnswer.classList.add('opacity-30');
+        rowLengthAddition.classList.add('opacity-30');
+        noteFinalConsumption.textContent = "Manually specified consumption value";
+      } else {
+        // STEP 1: (CAD Consumption * CAD Width) / (Actual Width - Width Shrinkage %)
+        effectiveWidth = W_act * (1 - (S_W / 100));
+        intermediateAnswer = effectiveWidth > 0 ? (C_cad * W_cad) / effectiveWidth : 0;
+
+        // STEP 2: Answer + Length Shrinkage % => Answer + (Answer * S_L / 100)
+        lengthAddition = intermediateAnswer * (S_L / 100);
+        finalConsumption = intermediateAnswer + lengthAddition;
+
+        rowEffWidth.classList.remove('opacity-30');
+        rowInterAnswer.classList.remove('opacity-30');
+        rowLengthAddition.classList.remove('opacity-30');
+        noteFinalConsumption.textContent = "Intermediate Answer + Length Shrinkage %";
+      }
+
+      // Derived Metrics
+      const consumptionDozen = finalConsumption * 12;
+      const consumption100 = finalConsumption * 100;
+      const consumptionMeter = finalConsumption * 0.9144;
+
+      // Production Capacity from In-Housed Fabric
+      const possiblePcs = finalConsumption > 0 ? Math.floor(inhouseYards / finalConsumption) : 0;
+      const possibleDozens = (possiblePcs / 12).toFixed(1);
+      const requiredFabric = orderQty * finalConsumption;
+      const stockBalance = inhouseYards - requiredFabric;
+
+      // Custom Target Pcs Yardage Calculation
+      const customReqYards = customPcs * finalConsumption;
+      const customReqMeters = customReqYards * 0.9144;
+      const customDozensVal = (customPcs / 12).toFixed(1);
+      const customRollsCount = Math.ceil(customReqYards / 100);
+
+      // Update Main Highlight Card
+      resActualConsumption.textContent = finalConsumption.toFixed(3);
+      resConsumptionMeter.textContent = consumptionMeter.toFixed(3) + " m";
+      resConsumptionDozen.textContent = consumptionDozen.toFixed(3) + " yd";
+      resConsumption100.textContent = consumption100.toFixed(3) + " yd";
+
+      // Update In-housed Fabric Capacity Card
+      lblInhouseYards.textContent = inhouseYards.toLocaleString('en-US');
+      resPossiblePcs.textContent = possiblePcs.toLocaleString('en-US');
+      resPossibleDozens.textContent = possibleDozens + " dozen";
+      
+      if (stockBalance >= 0) {
+        resStockBalance.textContent = "+" + stockBalance.toFixed(1) + " yd surplus";
+        resStockBalance.className = "font-bold text-emerald-300";
+      } else {
+        resStockBalance.textContent = stockBalance.toFixed(1) + " yd shortage";
+        resStockBalance.className = "font-bold text-rose-300";
+      }
+
+      // Update Custom Pcs Fabric Estimator Card
+      resCustomReqYards.textContent = customReqYards.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + " yd";
+      resCustomReqMeters.textContent = customReqMeters.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + " m";
+      resCustomDozens.textContent = customDozensVal;
+      resCustomActiveRate.textContent = finalConsumption.toFixed(3);
+      resCustomRolls.textContent = customRollsCount + " Rolls";
+
+      // Update Parameter Breakdown Table
+      resEffectiveWidth.textContent = isManual ? "-" : effectiveWidth.toFixed(3);
+      resIntermediateAnswer.textContent = isManual ? "-" : intermediateAnswer.toFixed(3);
+      resLengthAddition.textContent = isManual ? "-" : lengthAddition.toFixed(3);
+
+      resActualConsumptionRow.textContent = finalConsumption.toFixed(3);
+      resConsumptionDozenRow.textContent = consumptionDozen.toFixed(3);
+      resConsumption100Row.textContent = consumption100.toFixed(3);
+      resConsumptionMeterRow.textContent = consumptionMeter.toFixed(3);
+    }
+
+    // Event listeners
+    [cadConsumptionInput, cadWidthInput, actualWidthInput, lengthShrinkageInput, widthShrinkageInput, inhouseFabricInput, orderQtyInput, manualConsumptionInput, customTargetPcsInput].forEach(input => {
+      input.addEventListener('input', calculateConsumption);
+    });
+
+    btnPrint.addEventListener('click', () => {
+      window.print();
+    });
+
+    // Initial Calculation
+    calculateConsumption();
+  </script>
+</body>
+</html>
