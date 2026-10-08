@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Garment Fabric Consumption Calculator</title>
+  <title>TEXFLOW PRO | Apparel Merchandising & Costing Suite</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Flowbite CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
   <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -18,7 +22,16 @@
             sans: ['Inter', 'sans-serif'],
           },
           colors: {
+            'neutral-primary': '#ffffff',
+            'neutral-secondary': '#f9fafb',
+            'neutral-secondary-soft': '#f9fafb',
+            'neutral-tertiary': '#f3f4f6',
+            'default': '#e5e7eb',
+            'heading': '#111827',
+            'body': '#4b5563',
+            'fg-brand': '#1d4ed8',
             brand: {
+              DEFAULT: '#1d4ed8',
               50: '#f0f7ff',
               100: '#e0effe',
               500: '#1d4ed8',
@@ -26,6 +39,9 @@
               700: '#1e3a8a',
               800: '#172554',
             }
+          },
+          borderRadius: {
+            'base': '0.5rem',
           }
         }
       }
@@ -33,30 +49,944 @@
   </script>
   <style>
     @media print {
-      .no-print { display: none !important; }
-      body { background-color: #ffffff !important; color: #000000 !important; }
-      .shadow-xl, .shadow-lg, .shadow-md, .shadow-sm { box-shadow: none !important; }
+
+      .no-print,
+      nav,
+      #aboutModal,
+      #contactModal {
+        display: none !important;
+      }
+
+      body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        padding-top: 0 !important;
+      }
+
+      .shadow-xl,
+      .shadow-lg,
+      .shadow-md,
+      .shadow-sm {
+        box-shadow: none !important;
+      }
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen pb-12">
 
-  <!-- Header Banner -->
-  <header class="bg-gradient-to-r from-slate-900 via-brand-800 to-slate-900 text-white py-8 px-4 sm:px-8 shadow-md">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-      <div>
-        <div class="flex items-center gap-3">
-          <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen pt-20 pb-12">
+
+  <!-- Flowbite Fixed Navigation Bar -->
+  <nav
+    class="bg-neutral-primary fixed w-full z-30 top-0 start-0 border-b border-default shadow-xs backdrop-blur-md bg-white/95">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <a href="#" id="brandLogoBtn" class="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer">
+        <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-xs shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+            </path>
           </svg>
-          <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">CONSUMPTION CALCULATOR</h1>
         </div>
-        <p class="text-slate-300 text-sm mt-1">Calculated Formula or Manual Consumption Override</p>
+        <div class="flex items-center gap-2">
+          <span class="self-center text-xl text-heading font-black tracking-tight whitespace-nowrap">TEXFLEX</span>
+
+        </div>
+      </a>
+      <button data-collapse-toggle="navbar-default" type="button"
+        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-body rounded-base md:hidden hover:bg-neutral-secondary-soft hover:text-heading focus:outline-none focus:ring-2 focus:ring-neutral-tertiary cursor-pointer"
+        aria-controls="navbar-default" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+          viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14" />
+        </svg>
+      </button>
+      <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+        <ul
+          class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-default rounded-base bg-neutral-secondary-soft md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-neutral-primary items-center">
+          <li class="w-full md:w-auto">
+            <button id="tabBtnConsumption" type="button"
+              class="nav-tab-btn block w-full text-left md:w-auto py-2 px-3 text-white bg-brand rounded-base md:bg-transparent md:text-fg-brand md:p-0 font-semibold transition cursor-pointer"
+              aria-current="page">Consumption Calculator</button>
+          </li>
+          <li class="w-full md:w-auto">
+            <button id="tabBtnSizeBreakdown" type="button"
+              class="nav-tab-btn flex items-center justify-between md:justify-start w-full md:w-auto gap-2 py-2 px-3 text-heading rounded-base hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 font-medium transition cursor-pointer">
+              <span>Size Breakdown</span>
+              <span
+                class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded border border-amber-200 uppercase">Minimi</span>
+            </button>
+          </li>
+          <li class="w-full md:w-auto">
+            <button id="tabBtnRetailPricing" type="button"
+              class="nav-tab-btn flex items-center justify-between md:justify-start w-full md:w-auto gap-2 py-2 px-3 text-heading rounded-base hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 font-medium transition cursor-pointer">
+              <span>Retail Pricing</span>
+              <span
+                class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded border border-emerald-200 uppercase">Commercial</span>
+            </button>
+          </li>
+          <li class="w-full md:w-auto">
+            <button type="button"
+              class="block w-full text-left md:w-auto py-2 px-3 text-heading rounded-base hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 font-medium transition cursor-pointer">About</button>
+          </li>
+          <li class="w-full md:w-auto">
+            <button type="button"
+              class="block w-full text-left md:w-auto py-2 px-3 text-heading rounded-base hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 font-medium transition cursor-pointer">Contact</button>
+          </li>
+        </ul>
       </div>
     </div>
-  </header>
+  </nav>
 
-  <main class="max-w-6xl mx-auto px-4 sm:px-8 mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+  <!-- Flowbite About Modal -->
+  <div id="aboutModal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-screen max-h-full bg-slate-900/60 backdrop-blur-xs flex">
+    <div class="relative p-4 w-full max-w-xl max-h-full">
+      <div class="relative bg-white rounded-2xl shadow-2xl border border-default">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-default">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                </path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-heading">
+                About TEXFLOW PRO
+              </h3>
+              <p class="text-xs text-body">Apparel Merchandising & Costing Suite v2.0</p>
+            </div>
+          </div>
+          <button id="closeAboutModalBtn" type="button"
+            class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center cursor-pointer">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+        <!-- Modal body -->
+        <div class="p-4 md:p-5 space-y-3.5">
+          <p class="text-xs leading-relaxed text-body">
+            <strong>TEXFLOW PRO</strong> is a professional garment calculation tool engineered for knit & woven
+            merchandising, fabric consumption optimization, ratio allocations, and commercial costing.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 text-xs">
+            <div class="p-3 bg-neutral-secondary-soft rounded-xl border border-default">
+              <span class="font-bold text-heading block">Fabric Consumption</span>
+              <span class="text-body">Body + rib + collar allowances per dozen & piece with live wastage factors.</span>
+            </div>
+            <div class="p-3 bg-neutral-secondary-soft rounded-xl border border-default">
+              <span class="font-bold text-heading block">MINIMI Size Breakdown</span>
+              <span class="text-body">Size-wise ratio distribution, Toddler/Kids/Boys & Men groups synchronized with
+                Excel.</span>
+            </div>
+            <div class="p-3 bg-neutral-secondary-soft rounded-xl border border-default">
+              <span class="font-bold text-heading block">Commercial Costing</span>
+              <span class="text-body">Retail vs Barcode realization comparison with net 0.90 factor analysis.</span>
+            </div>
+            <div class="p-3 bg-neutral-secondary-soft rounded-xl border border-default">
+              <span class="font-bold text-heading block">Excel Synchronized</span>
+              <span class="text-body">Formulas verified against <code>MINIMI COSTING.xlsx</code> sheets.</span>
+            </div>
+          </div>
+        </div>
+        <!-- Modal footer -->
+        <div class="flex items-center justify-end p-4 md:p-5 border-t border-default rounded-b">
+          <button id="closeAboutModalBtn2" type="button"
+            class="text-white bg-blue-600 hover:bg-blue-700 font-semibold rounded-lg text-xs px-4 py-2 cursor-pointer transition">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flowbite Contact Modal -->
+  <div id="contactModal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-screen max-h-full bg-slate-900/60 backdrop-blur-xs flex">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+      <div class="relative bg-white rounded-2xl shadow-2xl border border-default">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between p-4 border-b rounded-t border-default">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                </path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-heading">Merchandising Support</h3>
+              <p class="text-[11px] text-body">Technical & Commercial Assistance</p>
+            </div>
+          </div>
+          <button id="closeContactModalBtn" type="button"
+            class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center cursor-pointer">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+        <!-- Modal body -->
+        <div class="p-4 space-y-3 text-xs text-body">
+          <p>For custom formula adjustments, ratio distribution changes, or commercial costing support:</p>
+          <div class="p-3 bg-neutral-secondary-soft rounded-xl border border-default space-y-2 font-medium">
+            <div class="flex items-center justify-between text-heading"><span
+                class="text-body font-normal">Department:</span> <span>Apparel Merchandising</span></div>
+            <div class="flex items-center justify-between text-heading"><span
+                class="text-body font-normal">Workbook:</span> <span>MINIMI COSTING.xlsx</span></div>
+            <div class="flex items-center justify-between text-heading"><span class="text-body font-normal">System
+                Status:</span> <span class="text-emerald-600 font-bold">Synchronized & Active</span></div>
+          </div>
+        </div>
+        <!-- Modal footer -->
+        <div class="flex items-center justify-end p-4 border-t border-default rounded-b">
+          <button id="closeContactModalBtn2" type="button"
+            class="text-white bg-blue-600 hover:bg-blue-700 font-semibold rounded-lg text-xs px-4 py-2 cursor-pointer transition">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Separate Section: MINIMI Size-Wise Breakdown & Fabric Costing -->
+  <section id="sizeCostingSection"
+    class="hidden max-w-6xl mx-auto px-4 sm:px-8 mt-6 space-y-6 transition-all duration-300">
+
+    <!-- Section Top Bar -->
+    <div
+      class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-5 shadow-lg border border-indigo-500/30 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <div class="flex items-center gap-2.5 flex-wrap">
+          <span
+            class="bg-amber-400 text-slate-900 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-xs">
+            MINIMI COSTING
+          </span>
+          <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-white">Size-Wise Breakdown & Fabric Costing</h2>
+        </div>
+        <p class="text-xs text-indigo-200 mt-1">Ratio-based size quantity allocation & multi-category fabric consumption
+          from Excel sheet</p>
+      </div>
+
+      <div class="flex items-center gap-2.5 flex-wrap">
+        <button id="btnResetSizeDefaults"
+          class="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-lg border border-white/20 transition flex items-center gap-1.5 cursor-pointer">
+          <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+            </path>
+          </svg>
+          Reset Excel Defaults
+        </button>
+        <button id="btnCloseSizeSection"
+          class="px-3 py-1.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 text-xs font-semibold rounded-lg border border-rose-400/30 transition flex items-center gap-1.5 cursor-pointer">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+          Close Section
+        </button>
+      </div>
+    </div>
+
+    <!-- Boy's Section Card -->
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-5">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-3">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 flex items-center justify-center font-black text-base shadow-xs">
+            B
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-slate-900">For Boy's</h3>
+            <p class="text-xs text-slate-500">Size ratio distribution & Toddler / Kids / Boys grouped fabric consumption
+            </p>
+          </div>
+        </div>
+
+        <!-- Boy's PO QTY Input -->
+        <div class="flex items-center gap-3 bg-blue-50/70 border border-blue-200/90 px-4 py-2 rounded-xl">
+          <label for="boyPoQty" class="text-xs font-bold text-blue-950 uppercase tracking-wider">Boy's PO QTY:</label>
+          <div class="relative">
+            <input type="number" id="boyPoQty" value="300" min="1" step="1"
+              class="w-28 px-3 py-1 bg-white border border-blue-300 rounded-lg text-blue-950 font-black text-base focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-xs">
+          </div>
+          <span class="text-xs text-blue-700 font-bold">pcs</span>
+        </div>
+      </div>
+
+      <!-- Boy's 2-Table Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Table 1: Size Breakdown -->
+        <div
+          class="lg:col-span-5 bg-slate-50/70 p-4 rounded-xl border border-slate-200/70 flex flex-col justify-between">
+          <div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-2.5 gap-2">
+              <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Size Wise Allocation</span>
+              <label
+                class="flex items-center gap-1.5 cursor-pointer bg-white px-2.5 py-1 rounded-lg border border-slate-300 shadow-xs hover:border-blue-400 transition select-none">
+                <input type="checkbox" id="boyExactDecimalsToggle"
+                  class="w-3.5 h-3.5 text-blue-600 rounded focus:ring-blue-500 cursor-pointer">
+                <span class="text-[11px] font-bold text-slate-700">Accurate Decimals</span>
+                <span class="text-[10px] text-slate-400 font-normal">(Unchecked: &le; 36.5 &rarr; 36, 36.5+ &rarr;
+                  37)</span>
+              </label>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-slate-200/70 text-slate-700 uppercase font-bold text-[11px] border-b border-slate-200">
+                    <th class="py-2.5 px-3">Size</th>
+                    <th class="py-2.5 px-3 text-center">Ratio</th>
+                    <th class="py-2.5 px-3 text-right">Size Wise QTY</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200/60 font-medium text-slate-800">
+                  <tr class="hover:bg-blue-50/50 transition-colors">
+                    <td class="py-2 px-3 font-bold text-slate-900">2-3Y</td>
+                    <td class="py-2 px-3 text-center">
+                      <input type="number" step="0.1" id="boyRatio_2_3" value="1"
+                        class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 boy-ratio-input">
+                    </td>
+                    <td id="boyQty_2_3" class="py-2 px-3 text-right font-bold text-slate-900">50</td>
+                  </tr>
+                  <tr class="hover:bg-blue-50/50 transition-colors">
+                    <td class="py-2 px-3 font-bold text-slate-900">4-5Y</td>
+                    <td class="py-2 px-3 text-center">
+                      <input type="number" step="0.1" id="boyRatio_4_5" value="1.5"
+                        class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 boy-ratio-input">
+                    </td>
+                    <td id="boyQty_4_5" class="py-2 px-3 text-right font-bold text-slate-900">75</td>
+                  </tr>
+                  <tr class="hover:bg-blue-50/50 transition-colors">
+                    <td class="py-2 px-3 font-bold text-slate-900">6-7Y</td>
+                    <td class="py-2 px-3 text-center">
+                      <input type="number" step="0.1" id="boyRatio_6_7" value="1.5"
+                        class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 boy-ratio-input">
+                    </td>
+                    <td id="boyQty_6_7" class="py-2 px-3 text-right font-bold text-slate-900">75</td>
+                  </tr>
+                  <tr class="hover:bg-blue-50/50 transition-colors">
+                    <td class="py-2 px-3 font-bold text-slate-900">8-9Y</td>
+                    <td class="py-2 px-3 text-center">
+                      <input type="number" step="0.1" id="boyRatio_8_9" value="2"
+                        class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 boy-ratio-input">
+                    </td>
+                    <td id="boyQty_8_9" class="py-2 px-3 text-right font-bold text-slate-900">100</td>
+                  </tr>
+                  <tr class="hover:bg-blue-50/50 transition-colors">
+                    <td class="py-2 px-3 font-bold text-slate-900">10-11Y</td>
+                    <td class="py-2 px-3 text-center">
+                      <input type="number" step="0.1" id="boyRatio_10_11" value="3"
+                        class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 boy-ratio-input">
+                    </td>
+                    <td id="boyQty_10_11" class="py-2 px-3 text-right font-bold text-slate-900">150</td>
+                  </tr>
+                  <tr class="hover:bg-blue-50/50 transition-colors">
+                    <td class="py-2 px-3 font-bold text-slate-900">12-13Y</td>
+                    <td class="py-2 px-3 text-center">
+                      <input type="number" step="0.1" id="boyRatio_12_13" value="1"
+                        class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 boy-ratio-input">
+                    </td>
+                    <td id="boyQty_12_13" class="py-2 px-3 text-right font-bold text-slate-900">50</td>
+                  </tr>
+                  <tr class="hover:bg-blue-50/50 transition-colors">
+                    <td class="py-2 px-3 font-bold text-slate-900">14-15Y</td>
+                    <td class="py-2 px-3 text-center">
+                      <input type="number" step="0.1" id="boyRatio_14_15" value="0"
+                        class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 boy-ratio-input">
+                    </td>
+                    <td id="boyQty_14_15" class="py-2 px-3 text-right font-bold text-slate-900">0</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr class="bg-slate-200/90 font-black text-slate-950 border-t-2 border-slate-300">
+                    <td class="py-2.5 px-3 uppercase tracking-wider">TOTAL</td>
+                    <td id="boyTotalRatio" class="py-2.5 px-3 text-center text-sm font-black">10</td>
+                    <td id="boyTotalQty" class="py-2.5 px-3 text-right text-sm font-black text-blue-900">500</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table 2: Category Consumption & Required Fabric -->
+        <div
+          class="lg:col-span-7 bg-slate-50/70 p-4 rounded-xl border border-slate-200/70 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Category Fabric Costing</span>
+              <span class="text-[11px] text-slate-500 font-medium">PO Qty × Consumption</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-slate-200/70 text-slate-700 uppercase font-bold text-[11px] border-b border-slate-200">
+                    <th class="py-2.5 px-3">Category</th>
+                    <th class="py-2.5 px-2 text-center text-[10px] text-slate-500">Included Sizes</th>
+                    <th class="py-2.5 px-3 text-right">PO Qty</th>
+                    <th class="py-2.5 px-3 text-center">Consumption</th>
+                    <th class="py-2.5 px-3 text-right">Required Fabric</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200/60 font-medium text-slate-800">
+                  <tr class="hover:bg-blue-50/50 transition-colors">
+                    <td class="py-2.5 px-3 font-bold text-slate-900">Toddler</td>
+                    <td class="py-2.5 px-2 text-center text-[11px] text-slate-500">2-3Y + 4-5Y</td>
+                    <td id="toddlerPoQty" class="py-2.5 px-3 text-right font-bold text-slate-900">125</td>
+                    <td class="py-2.5 px-3 text-center">
+                      <div class="inline-flex items-center gap-1">
+                        <input type="number" step="0.01" id="toddlerConsumption" value="0.84"
+                          class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 boy-calc-trigger">
+                        <span class="text-[11px] text-slate-500 font-medium">yd</span>
+                      </div>
+                    </td>
+                    <td id="toddlerReqFabric" class="py-2.5 px-3 text-right font-black text-slate-900">125.00</td>
+                  </tr>
+                  <tr class="hover:bg-blue-50/50 transition-colors">
+                    <td class="py-2.5 px-3 font-bold text-slate-900">Kids</td>
+                    <td class="py-2.5 px-2 text-center text-[11px] text-slate-500">6-7Y + 8-9Y</td>
+                    <td id="kidsPoQty" class="py-2.5 px-3 text-right font-bold text-slate-900">175</td>
+                    <td class="py-2.5 px-3 text-center">
+                      <div class="inline-flex items-center gap-1">
+                        <input type="number" step="0.01" id="kidsConsumption" value="1.1"
+                          class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 boy-calc-trigger">
+                        <span class="text-[11px] text-slate-500 font-medium">yd</span>
+                      </div>
+                    </td>
+                    <td id="kidsReqFabric" class="py-2.5 px-3 text-right font-black text-slate-900">350.00</td>
+                  </tr>
+                  <tr class="hover:bg-blue-50/50 transition-colors">
+                    <td class="py-2.5 px-3 font-bold text-slate-900">Boys</td>
+                    <td class="py-2.5 px-2 text-center text-[11px] text-slate-500">10-15Y</td>
+                    <td id="boysPoQty" class="py-2.5 px-3 text-right font-bold text-slate-900">200</td>
+                    <td class="py-2.5 px-3 text-center">
+                      <div class="inline-flex items-center gap-1">
+                        <input type="number" step="0.01" id="boysConsumption" value="1.32"
+                          class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 boy-calc-trigger">
+                        <span class="text-[11px] text-slate-500 font-medium">yd</span>
+                      </div>
+                    </td>
+                    <td id="boysReqFabric" class="py-2.5 px-3 text-right font-black text-slate-900">400.00</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr class="border-t-2 border-slate-300 bg-slate-100/90 font-bold">
+                    <td class="py-2.5 px-3 uppercase tracking-wider text-slate-900">Total Group Qty</td>
+                    <td></td>
+                    <td id="boyGroupTotalQty" class="py-2.5 px-3 text-right font-black text-slate-900">500</td>
+                    <td class="py-2.5 px-3 text-center text-xs text-slate-600 font-semibold">Total Required Fabric:</td>
+                    <td class="py-2.5 px-3 text-right">
+                      <!-- Excel Yellow Highlight exact match -->
+                      <span id="boyTotalFabric"
+                        class="bg-yellow-300 text-slate-950 font-black px-2.5 py-1 rounded border border-yellow-400 shadow-xs inline-block text-sm">
+                        875.00
+                      </span>
+                      <span class="text-[11px] text-slate-500 font-medium ml-1">yd</span>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+
+          <!-- Boy's Avg Consumption Highlight & Quick Action -->
+          <div
+            class="mt-4 pt-3 border-t border-slate-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white p-3.5 rounded-xl border border-blue-100 shadow-xs">
+            <div>
+              <span class="text-[11px] text-slate-500 uppercase font-bold tracking-wider block">Avg Consumption
+                (Boy's)</span>
+              <div class="text-2xl font-black text-blue-900 flex items-baseline gap-1.5">
+                <span id="boyAvgConsumption">1.750</span>
+                <span class="text-xs font-semibold text-blue-600">yd/pcs</span>
+              </div>
+              <span class="text-[10px] text-slate-400">Total Fabric (875) ÷ PO Qty (500)</span>
+            </div>
+
+            <button id="btnApplyBoyToMain"
+              class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold rounded-lg shadow transition flex items-center gap-1.5 cursor-pointer">
+              <svg class="w-4 h-4 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6">
+                </path>
+              </svg>
+              Apply to Main Calculator
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Men's Section Card -->
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-5">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-3">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 flex items-center justify-center font-black text-base shadow-xs">
+            M
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-slate-900">For Men's</h3>
+            <p class="text-xs text-slate-500">Adult size ratio distribution & direct fabric requirement</p>
+          </div>
+        </div>
+
+        <!-- Men's PO QTY Input -->
+        <div class="flex items-center gap-3 bg-indigo-50/70 border border-indigo-200/90 px-4 py-2 rounded-xl">
+          <label for="menPoQty" class="text-xs font-bold text-indigo-950 uppercase tracking-wider">Men's PO QTY:</label>
+          <div class="relative">
+            <input type="number" id="menPoQty" value="500" min="1" step="1"
+              class="w-28 px-3 py-1 bg-white border border-indigo-300 rounded-lg text-indigo-950 font-black text-base focus:ring-2 focus:ring-indigo-500 focus:outline-none shadow-xs">
+          </div>
+          <span class="text-xs text-indigo-700 font-bold">pcs</span>
+        </div>
+      </div>
+
+      <!-- Men's 2-Table Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Table 1: Men's Size Breakdown -->
+        <div
+          class="lg:col-span-5 bg-slate-50/70 p-4 rounded-xl border border-slate-200/70 flex flex-col justify-between">
+          <div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-2.5 gap-2">
+              <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Size Wise Allocation</span>
+              <label
+                class="flex items-center gap-1.5 cursor-pointer bg-white px-2.5 py-1 rounded-lg border border-slate-300 shadow-xs hover:border-indigo-400 transition select-none">
+                <input type="checkbox" id="menExactDecimalsToggle"
+                  class="w-3.5 h-3.5 text-indigo-600 rounded focus:ring-indigo-500 cursor-pointer">
+                <span class="text-[11px] font-bold text-slate-700">Accurate Decimals</span>
+                <span class="text-[10px] text-slate-400 font-normal">(Unchecked = Round Up e.g. 36.67 &rarr; 37)</span>
+              </label>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-slate-200/70 text-slate-700 uppercase font-bold text-[11px] border-b border-slate-200">
+                    <th class="py-2.5 px-3">Size</th>
+                    <th class="py-2.5 px-3 text-center">Ratio</th>
+                    <th class="py-2.5 px-3 text-right">Size Wise QTY</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200/60 font-medium text-slate-800">
+                  <tr class="hover:bg-indigo-50/50 transition-colors">
+                    <td class="py-2 px-3 font-bold text-slate-900">S</td>
+                    <td class="py-2 px-3 text-center">
+                      <input type="number" step="0.1" id="menRatio_S" value="1"
+                        class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-indigo-500 men-ratio-input">
+                    </td>
+                    <td id="menQty_S" class="py-2 px-3 text-right font-bold text-slate-900 font-mono">50</td>
+                  </tr>
+                  <tr class="hover:bg-indigo-50/50 transition-colors">
+                    <td class="py-2 px-3 font-bold text-slate-900">M</td>
+                    <td class="py-2 px-3 text-center">
+                      <input type="number" step="0.1" id="menRatio_M" value="3"
+                        class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-indigo-500 men-ratio-input">
+                    </td>
+                    <td id="menQty_M" class="py-2 px-3 text-right font-bold text-slate-900 font-mono">150</td>
+                  </tr>
+                  <tr class="hover:bg-indigo-50/50 transition-colors">
+                    <td class="py-2 px-3 font-bold text-slate-900">L</td>
+                    <td class="py-2 px-3 text-center">
+                      <input type="number" step="0.1" id="menRatio_L" value="4"
+                        class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-indigo-500 men-ratio-input">
+                    </td>
+                    <td id="menQty_L" class="py-2 px-3 text-right font-bold text-slate-900 font-mono">200</td>
+                  </tr>
+                  <tr class="hover:bg-indigo-50/50 transition-colors">
+                    <td class="py-2 px-3 font-bold text-slate-900">XL</td>
+                    <td class="py-2 px-3 text-center">
+                      <input type="number" step="0.1" id="menRatio_XL" value="2"
+                        class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-indigo-500 men-ratio-input">
+                    </td>
+                    <td id="menQty_XL" class="py-2 px-3 text-right font-bold text-slate-900 font-mono">100</td>
+                  </tr>
+                  <tr class="hover:bg-indigo-50/50 transition-colors">
+                    <td class="py-2 px-3 font-bold text-slate-900">XXL</td>
+                    <td class="py-2 px-3 text-center">
+                      <input type="number" step="0.1" id="menRatio_XXL" value="1"
+                        class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-indigo-500 men-ratio-input">
+                    </td>
+                    <td id="menQty_XXL" class="py-2 px-3 text-right font-bold text-slate-900 font-mono">0</td>
+                  </tr>
+                  <tr class="hover:bg-indigo-50/50 transition-colors">
+                    <td class="py-2 px-3 font-bold text-slate-900">XXXL</td>
+                    <td class="py-2 px-3 text-center">
+                      <input type="number" step="0.1" id="menRatio_XXXL" value="0"
+                        class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-indigo-500 men-ratio-input">
+                    </td>
+                    <td id="menQty_XXXL" class="py-2 px-3 text-right font-bold text-slate-900 font-mono">0</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr class="bg-slate-200/90 font-black text-slate-950 border-t-2 border-slate-300">
+                    <td class="py-2.5 px-3 uppercase tracking-wider">TOTAL</td>
+                    <td id="menTotalRatio" class="py-2.5 px-3 text-center text-sm font-black">10</td>
+                    <td id="menTotalQty" class="py-2.5 px-3 text-right text-sm font-black text-indigo-900">500</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table 2: Men's Fabric Costing -->
+        <div
+          class="lg:col-span-7 bg-slate-50/70 p-4 rounded-xl border border-slate-200/70 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Fabric Costing & Required
+                Fabric</span>
+              <span class="text-[11px] text-slate-500 font-medium">PO Qty × Consumption</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-slate-200/70 text-slate-700 uppercase font-bold text-[11px] border-b border-slate-200">
+                    <th class="py-2.5 px-3">Category</th>
+                    <th class="py-2.5 px-3 text-right">PO Qty</th>
+                    <th class="py-2.5 px-3 text-center">Consumption</th>
+                    <th class="py-2.5 px-3 text-right">Required Fabric</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200/60 font-medium text-slate-800">
+                  <tr class="hover:bg-indigo-50/50 transition-colors">
+                    <td class="py-3 px-3 font-bold text-slate-900">For Men's</td>
+                    <td id="menTablePoQty" class="py-3 px-3 text-right font-bold text-slate-900">500</td>
+                    <td class="py-3 px-3 text-center">
+                      <div class="inline-flex items-center gap-1">
+                        <input type="number" step="0.01" id="menConsumption" value="2"
+                          class="w-16 px-1.5 py-1 text-center bg-white border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-indigo-500">
+                        <span class="text-[11px] text-slate-500 font-medium">yd</span>
+                      </div>
+                    </td>
+                    <td id="menReqFabric" class="py-3 px-3 text-right font-black text-slate-900">1000.00</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr class="border-t-2 border-slate-300 bg-slate-100/90 font-bold">
+                    <td class="py-2.5 px-3 uppercase tracking-wider text-slate-900">Total</td>
+                    <td colspan="2" class="py-2.5 px-3 text-center text-xs text-slate-600 font-semibold">Total Required
+                      Fabric:</td>
+                    <td class="py-2.5 px-3 text-right">
+                      <!-- Excel Yellow Highlight exact match -->
+                      <span id="menTotalFabric"
+                        class="bg-yellow-300 text-slate-950 font-black px-2.5 py-1 rounded border border-yellow-400 shadow-xs inline-block text-sm">
+                        1000
+                      </span>
+                      <span class="text-[11px] text-slate-500 font-medium ml-1">yd</span>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+
+          <!-- Men's Consumption Highlight & Quick Action -->
+          <div
+            class="mt-4 pt-3 border-t border-slate-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white p-3.5 rounded-xl border border-indigo-100 shadow-xs">
+            <div>
+              <span class="text-[11px] text-slate-500 uppercase font-bold tracking-wider block">Consumption Rate
+                (Men's)</span>
+              <div class="text-2xl font-black text-indigo-900 flex items-baseline gap-1.5">
+                <span id="menAvgConsumptionDisplay">2.000</span>
+                <span class="text-xs font-semibold text-indigo-600">yd/pcs</span>
+              </div>
+              <span class="text-[10px] text-slate-400">Total Fabric (1000) ÷ PO Qty (500)</span>
+            </div>
+
+            <button id="btnApplyMenToMain"
+              class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs font-bold rounded-lg shadow transition flex items-center gap-1.5 cursor-pointer">
+              <svg class="w-4 h-4 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6">
+                </path>
+              </svg>
+              Apply to Main Calculator
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Combined Order Grand Total Metrics -->
+    <div class="bg-gradient-to-br from-slate-900 via-brand-800 to-slate-900 rounded-2xl p-6 text-white shadow-lg">
+      <div class="flex items-center justify-between border-b border-slate-700/60 pb-3 mb-4">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+            </path>
+          </svg>
+          <h3 class="text-base font-bold text-white">Consolidated Order Costing Summary (Boy's + Men's)</h3>
+        </div>
+        <span
+          class="bg-amber-400/20 text-amber-300 text-xs px-2.5 py-0.5 rounded-full border border-amber-400/30 font-bold">
+          Combined Grand Total
+        </span>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+        <div class="bg-white/10 backdrop-blur-md rounded-xl p-3.5 border border-white/10">
+          <span class="text-[11px] text-slate-300 uppercase font-semibold block">Total Pieces</span>
+          <div class="text-2xl font-black text-white mt-1">
+            <span id="combinedTotalPcs">1,000</span>
+            <span class="text-xs text-blue-300 font-normal">pcs</span>
+          </div>
+          <span class="text-[10px] text-slate-400">Boy's (500) + Men's (500)</span>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-md rounded-xl p-3.5 border border-white/10">
+          <span class="text-[11px] text-amber-300 uppercase font-semibold block">Total Fabric Required</span>
+          <div class="text-2xl font-black text-amber-300 mt-1">
+            <span id="combinedTotalFabric">1,875.0</span>
+            <span class="text-xs text-amber-200 font-normal">yd</span>
+          </div>
+          <span class="text-[10px] text-slate-400">Boy's (875) + Men's (1000)</span>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-md rounded-xl p-3.5 border border-white/10">
+          <span class="text-[11px] text-slate-300 uppercase font-semibold block">Overall Avg Consumption</span>
+          <div class="text-2xl font-black text-emerald-300 mt-1">
+            <span id="combinedAvgConsumption">1.875</span>
+            <span class="text-xs text-emerald-200 font-normal">yd/pcs</span>
+          </div>
+          <span class="text-[10px] text-slate-400">1,875 yd ÷ 1,000 pcs</span>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-md rounded-xl p-3.5 border border-white/10">
+          <span class="text-[11px] text-slate-300 uppercase font-semibold block">Total in Meters</span>
+          <div class="text-2xl font-black text-white mt-1">
+            <span id="combinedFabricMeters">1,714.5</span>
+            <span class="text-xs text-blue-300 font-normal">m</span>
+          </div>
+          <span class="text-[10px] text-slate-400">1 yd = 0.9144 m</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Section: In-House Fabric PO Allocation Planner -->
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-3">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200 text-teal-700 flex items-center justify-center font-black text-lg shadow-xs">
+            <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+              </path>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="text-lg font-bold text-slate-900">In-Housed Fabric & PO Quantity Allocation Planner</h3>
+              <span
+                class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Production
+                Capacity</span>
+            </div>
+            <p class="text-xs text-slate-500">Add in-house fabric stock & specify % split for Boy's and Men's to
+              calculate attainable PO quantities</p>
+          </div>
+        </div>
+
+        <button id="btnSyncConsolidatedFabric"
+          class="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 active:scale-95 text-teal-800 text-xs font-bold rounded-lg border border-teal-300/80 transition flex items-center gap-1.5 cursor-pointer shadow-xs">
+          <svg class="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+            </path>
+          </svg>
+          <span>Sync Consolidated Fabric (<span id="btnSyncFabricVal">1,875</span> yd)</span>
+        </button>
+      </div>
+
+      <!-- Controls: In-Housed Fabric & Percentages -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 bg-slate-50/70 p-5 rounded-xl border border-slate-200">
+        <!-- Available Fabric Input -->
+        <div>
+          <label for="inHouseTotalFabric"
+            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            In-Housed Fabric Available:
+          </label>
+          <div class="relative">
+            <input type="number" id="inHouseTotalFabric" value="1875" min="0" step="1"
+              class="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-black text-lg focus:ring-2 focus:ring-teal-500 focus:outline-none shadow-xs inhouse-calc-trigger">
+            <span class="absolute right-3.5 top-3 text-xs text-slate-500 font-bold">yds</span>
+          </div>
+          <span class="text-[11px] text-slate-400 mt-1 block">Physical yardage currently in storage</span>
+        </div>
+
+        <!-- Boy's Allocation % -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label for="inHouseBoyPercent" class="text-xs font-bold text-blue-900 uppercase tracking-wider">
+              Boy's Share (%):
+            </label>
+            <span id="inHouseBoyPercentBadge"
+              class="text-xs font-black text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">50%</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="inHouseBoyPercent" value="50" min="0" max="100" step="1"
+              class="w-full px-3.5 py-2.5 bg-white border border-blue-300 rounded-xl text-blue-950 font-black text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-xs inhouse-calc-trigger">
+            <span class="absolute right-3.5 top-3 text-xs text-blue-600 font-bold">%</span>
+          </div>
+          <span class="text-[11px] text-blue-500 mt-1 block">Percentage allocated to Boy's styles</span>
+        </div>
+
+        <!-- Men's Allocation % -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label for="inHouseMenPercent" class="text-xs font-bold text-indigo-900 uppercase tracking-wider">
+              Men's Share (%):
+            </label>
+            <span id="inHouseMenPercentBadge"
+              class="text-xs font-black text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded-full">50%</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="inHouseMenPercent" value="50" min="0" max="100" step="1"
+              class="w-full px-3.5 py-2.5 bg-white border border-indigo-300 rounded-xl text-indigo-950 font-black text-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none shadow-xs inhouse-calc-trigger">
+            <span class="absolute right-3.5 top-3 text-xs text-indigo-600 font-bold">%</span>
+          </div>
+          <span class="text-[11px] text-indigo-500 mt-1 block">Percentage allocated to Men's styles</span>
+        </div>
+      </div>
+
+      <!-- Auto-Linked Average Consumption Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Boy's Auto Rate Card -->
+        <div class="bg-blue-50/60 border border-blue-200/90 rounded-xl p-4 flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+              <span class="text-xs font-bold text-blue-950 uppercase tracking-wider">Avg Consumption (Boy's)</span>
+            </div>
+            <span class="text-[11px] text-blue-600 font-medium mt-0.5 block">Auto-added from Boy's breakdown</span>
+          </div>
+          <div class="text-right">
+            <div class="text-2xl font-black text-blue-900 font-mono">
+              <span id="inHouseBoyAvgCons">1.750</span>
+              <span class="text-xs font-medium text-blue-700">yd/pcs</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Men's Auto Rate Card -->
+        <div class="bg-indigo-50/60 border border-indigo-200/90 rounded-xl p-4 flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+              <span class="text-xs font-bold text-indigo-950 uppercase tracking-wider">Avg Consumption (Men's)</span>
+            </div>
+            <span class="text-[11px] text-indigo-600 font-medium mt-0.5 block">Auto-added from Men's rate</span>
+          </div>
+          <div class="text-right">
+            <div class="text-2xl font-black text-indigo-900 font-mono">
+              <span id="inHouseMenAvgCons">2.000</span>
+              <span class="text-xs font-medium text-indigo-700">yd/pcs</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Allocation & Resulting PO Quantities Table -->
+      <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-xs">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-slate-100/90 text-slate-800 uppercase font-bold text-[11px] border-b border-slate-200">
+              <th class="py-3 px-4">Category</th>
+              <th class="py-3 px-3 text-center">Share %</th>
+              <th class="py-3 px-3 text-right">Total Fabric Needed / Allocated</th>
+              <th class="py-3 px-3 text-center">Avg Consumption</th>
+              <th class="py-3 px-4 text-right font-black text-slate-900">What will be PO QTY (pcs)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-slate-800 font-medium">
+            <!-- Boy's Output Row -->
+            <tr class="hover:bg-blue-50/30 transition">
+              <td class="py-3 px-4 font-bold text-blue-950">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+                  <span>For Boy's</span>
+                </div>
+              </td>
+              <td id="inHouseRowBoyPct" class="py-3 px-3 text-center font-bold text-slate-700">50%</td>
+              <td class="py-3 px-3 text-right font-mono font-bold text-slate-900">
+                <span id="inHouseBoyFabric">937.50</span> <span class="text-slate-500 font-normal">yd</span>
+              </td>
+              <td class="py-3 px-3 text-center font-mono text-slate-600">
+                <span id="inHouseRowBoyCons">1.750</span> yd/pcs
+              </td>
+              <td class="py-3 px-4 text-right font-mono">
+                <div class="text-base font-black text-blue-800" id="inHouseBoyPoQty">536</div>
+                <div class="text-[10px] text-slate-400 font-normal" id="inHouseBoyPoQtyExact">535.71 exact</div>
+              </td>
+            </tr>
+
+            <!-- Men's Output Row -->
+            <tr class="hover:bg-indigo-50/30 transition">
+              <td class="py-3 px-4 font-bold text-indigo-950">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                  <span>For Men's</span>
+                </div>
+              </td>
+              <td id="inHouseRowMenPct" class="py-3 px-3 text-center font-bold text-slate-700">50%</td>
+              <td class="py-3 px-3 text-right font-mono font-bold text-slate-900">
+                <span id="inHouseMenFabric">937.50</span> <span class="text-slate-500 font-normal">yd</span>
+              </td>
+              <td class="py-3 px-3 text-center font-mono text-slate-600">
+                <span id="inHouseRowMenCons">2.000</span> yd/pcs
+              </td>
+              <td class="py-3 px-4 text-right font-mono">
+                <div class="text-base font-black text-indigo-800" id="inHouseMenPoQty">469</div>
+                <div class="text-[10px] text-slate-400 font-normal" id="inHouseMenPoQtyExact">468.75 exact</div>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="bg-slate-200/90 font-black text-slate-950 border-t-2 border-slate-300">
+              <td class="py-3 px-4 uppercase tracking-wider">TOTAL IN-HOUSED SUMMARY</td>
+              <td id="inHouseRowTotalPct" class="py-3 px-3 text-center text-sm font-black">100%</td>
+              <td class="py-3 px-3 text-right font-mono text-sm sm:text-base text-slate-950">
+                <span id="inHouseTotalAllocatedFabric">1,875.00</span> yd
+              </td>
+              <td class="py-3 px-3 text-center text-xs text-slate-600 font-bold">Consolidated</td>
+              <td class="py-3 px-4 text-right font-mono">
+                <div class="text-base sm:text-lg font-black text-emerald-800" id="inHouseTotalPoQty">1,005 pcs</div>
+                <div class="text-[10px] text-emerald-700 font-semibold" id="inHouseTotalPoQtyExact">1,004.46 exact total
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+        <p class="text-xs text-slate-500">
+          Calculation logic: <span class="font-mono text-slate-700">PO QTY = Allocated Fabric &divide; Avg
+            Consumption</span>
+        </p>
+        <button id="btnApplyInHouseToPo"
+          class="px-4 py-2 bg-teal-600 hover:bg-teal-700 active:scale-95 text-white text-xs font-bold rounded-lg shadow transition flex items-center gap-2 cursor-pointer">
+          <svg class="w-4 h-4 text-teal-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+          </svg>
+          <span>Apply Planned PO Qty to Boy's & Men's Inputs</span>
+        </button>
+      </div>
+    </div>
+
+  </section>
+
+  <main id="consumptionSection" class="max-w-6xl mx-auto px-4 sm:px-8 mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
 
     <!-- Left Column: Inputs -->
     <div class="lg:col-span-5 space-y-6">
@@ -65,7 +995,9 @@
       <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
         <h2 class="text-lg font-semibold text-slate-900 border-b border-slate-100 pb-3 mb-5 flex items-center gap-2">
           <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+            </path>
           </svg>
           Input Parameters
         </h2>
@@ -186,13 +1118,16 @@
     <div class="lg:col-span-7 space-y-6">
 
       <!-- Main Results Card -->
-      <div class="bg-gradient-to-br from-slate-900 via-brand-800 to-slate-900 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-700/60 pb-4 mb-4 gap-2">
+      <div
+        class="bg-gradient-to-br from-slate-900 via-brand-800 to-slate-900 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+        <div
+          class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-700/60 pb-4 mb-4 gap-2">
           <div>
             <span class="text-xs font-semibold uppercase tracking-wider text-blue-300">Automatic Results</span>
             <h2 class="text-xl font-bold">Final Fabric Consumption</h2>
           </div>
-          <span id="badgeConsumptionSource" class="bg-amber-400/20 text-amber-300 text-xs px-2.5 py-1 rounded-full border border-amber-400/30 font-semibold">
+          <span id="badgeConsumptionSource"
+            class="bg-amber-400/20 text-amber-300 text-xs px-2.5 py-1 rounded-full border border-amber-400/30 font-semibold">
             Calculated Formula
           </span>
         </div>
@@ -224,15 +1159,18 @@
       </div>
 
       <!-- In-housed Fabric Production Capacity Card -->
-      <div class="bg-gradient-to-r from-emerald-900 to-teal-800 rounded-2xl p-6 text-white shadow-md relative overflow-hidden">
+      <div
+        class="bg-gradient-to-r from-emerald-900 to-teal-800 rounded-2xl p-6 text-white shadow-md relative overflow-hidden">
         <div class="flex items-center justify-between border-b border-emerald-700/60 pb-3 mb-4">
           <div class="flex items-center gap-2">
             <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
             </svg>
             <h3 class="text-base font-bold text-white">Production from In-Housed Fabric</h3>
           </div>
-          <span class="bg-emerald-500/20 text-emerald-200 text-xs px-2.5 py-1 rounded-full border border-emerald-400/30 font-medium">
+          <span
+            class="bg-emerald-500/20 text-emerald-200 text-xs px-2.5 py-1 rounded-full border border-emerald-400/30 font-medium">
             Stock Yield
           </span>
         </div>
@@ -243,7 +1181,8 @@
             <div class="text-3xl sm:text-4xl font-extrabold text-white mt-0.5">
               <span id="resPossiblePcs">0</span> <span class="text-lg font-medium text-emerald-300">pcs</span>
             </div>
-            <p class="text-xs text-emerald-200 mt-1">From <span id="lblInhouseYards" class="font-bold text-white">0</span> yards of in-housed fabric</p>
+            <p class="text-xs text-emerald-200 mt-1">From <span id="lblInhouseYards"
+                class="font-bold text-white">0</span> yards of in-housed fabric</p>
           </div>
 
           <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/10 space-y-2">
@@ -261,14 +1200,18 @@
 
       <!-- Custom Target Pieces Fabric Estimator Card -->
       <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
-        <h3 class="text-base font-semibold text-slate-900 border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
+        <h3
+          class="text-base font-semibold text-slate-900 border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
           <div class="flex items-center gap-2">
             <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z">
+              </path>
             </svg>
             <span>Custom Garment Pieces Fabric Estimator</span>
           </div>
-          <span class="text-xs text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full font-semibold border border-indigo-100">
+          <span
+            class="text-xs text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full font-semibold border border-indigo-100">
             Manual Pieces Calculation
           </span>
         </h3>
@@ -313,11 +1256,15 @@
 
       <!-- Detailed Parameter Breakdown Table Card -->
       <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
-        <h3 class="text-base font-semibold text-slate-900 border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
+        <h3
+          class="text-base font-semibold text-slate-900 border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
           <span>Detailed Parameter Breakdown</span>
-          <button id="btnPrint" class="no-print text-xs text-slate-600 hover:text-blue-600 flex items-center gap-1 font-medium transition">
+          <button id="btnPrint"
+            class="no-print text-xs text-slate-600 hover:text-blue-600 flex items-center gap-1 font-medium transition">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
+              </path>
             </svg>
             Print Summary
           </button>
@@ -326,7 +1273,8 @@
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse text-xs">
             <thead>
-              <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-semibold text-[10px] tracking-wider">
+              <tr
+                class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-semibold text-[10px] tracking-wider">
                 <th class="py-2.5 px-3">Output Parameter</th>
                 <th class="py-2.5 px-3">Calculated Value</th>
                 <th class="py-2.5 px-3">Unit</th>
@@ -356,7 +1304,8 @@
                 <td class="py-2.5 px-3">Final Consumption</td>
                 <td id="resActualConsumptionRow" class="py-2.5 px-3 font-bold text-blue-700">0.000</td>
                 <td class="py-2.5 px-3 text-blue-600">yd/pcs</td>
-                <td id="noteFinalConsumption" class="py-2.5 px-3 text-blue-800">Intermediate Answer + Length Shrinkage %</td>
+                <td id="noteFinalConsumption" class="py-2.5 px-3 text-blue-800">Intermediate Answer + Length Shrinkage %
+                </td>
               </tr>
               <tr>
                 <td class="py-2.5 px-3 font-medium">Consumption per Dozen</td>
@@ -383,6 +1332,244 @@
 
     </div>
   </main>
+
+  <!-- Separate Section 3: Commercial Retail vs Proposed Barcode Pricing (from Excel Sheet 2) -->
+  <section id="retailPricingSection" class="hidden max-w-6xl mx-auto px-4 sm:px-8 mt-8 space-y-6">
+
+    <!-- Section Top Bar -->
+    <div
+      class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-5 shadow-lg border border-indigo-500/30 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <div class="flex items-center gap-2.5 flex-wrap">
+          <span
+            class="bg-emerald-400 text-slate-950 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-xs">
+            COMMERCIAL PRICING
+          </span>
+          <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-white">Retail vs Barcode Proposed Pricing</h2>
+        </div>
+        <p class="text-xs text-indigo-200 mt-1">Category commercial realization comparison (Total = Price &times; Qty
+          &times; 0.9 Net Factor)</p>
+      </div>
+
+      <div class="flex items-center gap-2.5 flex-wrap">
+        <button id="btnSyncPoFromBreakdown"
+          class="px-3 py-1.5 bg-blue-600/40 hover:bg-blue-600/60 text-blue-200 text-xs font-semibold rounded-lg border border-blue-400/30 transition flex items-center gap-1.5 cursor-pointer">
+          <svg class="w-3.5 h-3.5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+            </path>
+          </svg>
+          Sync PO from Breakdown
+        </button>
+        <button id="btnResetPricingDefaults"
+          class="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-lg border border-white/20 transition flex items-center gap-1.5 cursor-pointer">
+          <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+            </path>
+          </svg>
+          Reset Image Defaults
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Stats Cards -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Total PO Quantity</span>
+        <div class="text-2xl font-black text-slate-900 mt-1">
+          <span id="kpiPricingPoQty">742</span>
+          <span class="text-xs text-slate-500 font-semibold">pcs</span>
+        </div>
+        <span class="text-[10px] text-slate-400">Toddler, Kids, Boys, Mens</span>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Total @ Retail Actual</span>
+        <div class="text-2xl font-black text-slate-900 mt-1">
+          <span id="kpiPricingTotalActual">1,592,653</span>
+          <span class="text-xs text-slate-500 font-semibold">Tk</span>
+        </div>
+        <span class="text-[10px] text-slate-400">Sum of Actual Net Values</span>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+        <span class="text-[11px] font-bold text-blue-600 uppercase tracking-wider block">Total @ Barcode Proposed</span>
+        <div class="text-2xl font-black text-blue-900 mt-1">
+          <span id="kpiPricingTotalBarcode">1,718,622</span>
+          <span class="text-xs text-blue-600 font-semibold">Tk</span>
+        </div>
+        <span class="text-[10px] text-blue-500">Proposed Barcode Value</span>
+      </div>
+
+      <div id="kpiPricingDiffCard"
+        class="bg-gradient-to-br from-emerald-50 to-teal-50 p-4 rounded-xl border border-emerald-200 shadow-xs transition-colors">
+        <span id="kpiPricingDiffTitle"
+          class="text-[11px] font-bold text-emerald-800 uppercase tracking-wider block">Realization Difference</span>
+        <div class="text-2xl font-black mt-1 flex items-baseline gap-0.5">
+          <span id="kpiPricingDiffSign" class="text-emerald-700">+</span><span id="kpiPricingTotalDiff"
+            class="text-emerald-700 font-mono">125,969</span>
+          <span class="text-xs text-slate-500 font-semibold ml-1">Tk</span>
+        </div>
+        <span id="kpiPricingDiffLabel" class="text-[10px] text-emerald-600 font-bold block">+7.91% Revenue Gain</span>
+      </div>
+    </div>
+
+    <!-- Pricing Table Card -->
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-3 mb-4 gap-2">
+        <div>
+          <h3 class="text-base font-bold text-slate-900">Commercial Category Costing & Comparison</h3>
+          <p class="text-xs text-slate-500">Net realization formula: Total = Price &times; PO/Qnty &times; 0.9 (matches
+            Excel Sheet 2)</p>
+        </div>
+        <span
+          class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs px-2.5 py-1 rounded-full font-bold">
+          Net Factor: 0.90 (10% VAT / Realization)
+        </span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-slate-100/80 text-slate-800 uppercase font-bold text-[11px] border-b border-slate-200">
+              <th class="py-3 px-3">Category</th>
+              <th class="py-3 px-3 text-right">Retail Actual (Tk)</th>
+              <th class="py-3 px-3 text-right">Barcode Proposed (Tk)</th>
+              <th class="py-3 px-3 text-right">PO/Qnty (pcs)</th>
+              <th class="py-3 px-3 text-right font-black text-slate-900">Total @ Actal (Tk)</th>
+              <th class="py-3 px-3 text-right font-black text-blue-900">Total @ Barcode (Tk)</th>
+              <th class="py-3 px-3 text-right font-black text-emerald-900">Difference (Tk)</th>
+            </tr>
+          </thead>
+          <tbody id="pricingTableBody" class="divide-y divide-slate-100 text-slate-800 font-medium">
+            <!-- Row 1: Toddler -->
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-3 font-bold text-slate-900">Toddler</td>
+              <td class="py-2.5 px-3 text-right">
+                <input type="number" step="0.01" id="priceActual_Toddler" value="1483.31"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right">
+                <input type="number" step="1" id="priceBarcode_Toddler" value="1690"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right">
+                <input type="number" step="1" id="pricePoQty_Toddler" value="75"
+                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td id="priceTotalActual_Toddler" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">100123
+              </td>
+              <td id="priceTotalBarcode_Toddler" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">114075
+              </td>
+              <td id="priceDiff_Toddler" class="py-2.5 px-3 text-right font-mono font-bold text-emerald-700">+13952</td>
+            </tr>
+
+            <!-- Row 2: Kids -->
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-3 font-bold text-slate-900">Kids</td>
+              <td class="py-2.5 px-3 text-right">
+                <input type="number" step="0.01" id="priceActual_Kids" value="1762.41"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right">
+                <input type="number" step="1" id="priceBarcode_Kids" value="1890"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right">
+                <input type="number" step="1" id="pricePoQty_Kids" value="105"
+                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td id="priceTotalActual_Kids" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">166548
+              </td>
+              <td id="priceTotalBarcode_Kids" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">178605
+              </td>
+              <td id="priceDiff_Kids" class="py-2.5 px-3 text-right font-mono font-bold text-emerald-700">+12057</td>
+            </tr>
+
+            <!-- Row 3: Boys -->
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-3 font-bold text-slate-900">Boys</td>
+              <td class="py-2.5 px-3 text-right">
+                <input type="number" step="0.01" id="priceActual_Boys" value="2011.57"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right">
+                <input type="number" step="1" id="priceBarcode_Boys" value="2190"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right">
+                <input type="number" step="1" id="pricePoQty_Boys" value="120"
+                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td id="priceTotalActual_Boys" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">217250
+              </td>
+              <td id="priceTotalBarcode_Boys" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">236520
+              </td>
+              <td id="priceDiff_Boys" class="py-2.5 px-3 text-right font-mono font-bold text-emerald-700">+19270</td>
+            </tr>
+
+            <!-- Row 4: Mens s -->
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-3 font-bold text-slate-900">Mens s</td>
+              <td class="py-2.5 px-3 text-right">
+                <input type="number" step="0.01" id="priceActual_Mens" value="2787.16"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right">
+                <input type="number" step="1" id="priceBarcode_Mens" value="2990"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right">
+                <input type="number" step="1" id="pricePoQty_Mens" value="442"
+                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td id="priceTotalActual_Mens" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">1108732
+              </td>
+              <td id="priceTotalBarcode_Mens" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">1189422
+              </td>
+              <td id="priceDiff_Mens" class="py-2.5 px-3 text-right font-mono font-bold text-emerald-700">+80690</td>
+            </tr>
+
+            <!-- Row 5: R -->
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-3 font-bold text-slate-900">R</td>
+              <td class="py-2.5 px-3 text-right">
+                <input type="number" step="0.01" id="priceActual_R" value="0"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-400 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right">
+                <input type="number" step="1" id="priceBarcode_R" value="0"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-400 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right">
+                <input type="number" step="1" id="pricePoQty_R" value="0"
+                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-400 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td id="priceTotalActual_R" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
+              <td id="priceTotalBarcode_R" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
+              <td id="priceDiff_R" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="bg-slate-200/90 font-black text-slate-950 border-t-2 border-slate-300">
+              <td class="py-3 px-3 uppercase tracking-wider">TOTAL</td>
+              <td></td>
+              <td></td>
+              <td id="priceTotalPoQty" class="py-3 px-3 text-right text-sm font-black font-mono">742</td>
+              <td id="priceGrandTotalActual"
+                class="py-3 px-3 text-right text-sm sm:text-base font-black font-mono text-slate-950">1592653</td>
+              <td id="priceGrandTotalBarcode"
+                class="py-3 px-3 text-right text-sm sm:text-base font-black font-mono text-blue-900">1718622</td>
+              <td id="priceGrandTotalDiff"
+                class="py-3 px-3 text-right text-sm sm:text-base font-black font-mono text-emerald-800">125969</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+  </section>
 
   <!-- JavaScript Logic -->
   <script>
@@ -517,7 +1704,7 @@
       lblInhouseYards.textContent = inhouseYards.toLocaleString('en-US');
       resPossiblePcs.textContent = possiblePcs.toLocaleString('en-US');
       resPossibleDozens.textContent = possibleDozens + " dozen";
-      
+
       if (stockBalance >= 0) {
         resStockBalance.textContent = "+" + stockBalance.toFixed(1) + " yd surplus";
         resStockBalance.className = "font-bold text-emerald-300";
@@ -555,6 +1742,722 @@
 
     // Initial Calculation
     calculateConsumption();
+
+    // ==========================================
+    // FLOWBITE NAVIGATION & MODAL LOGIC
+    // ==========================================
+
+    const tabBtnConsumption = document.getElementById('tabBtnConsumption');
+    const tabBtnSizeBreakdown = document.getElementById('tabBtnSizeBreakdown');
+    const tabBtnRetailPricing = document.getElementById('tabBtnRetailPricing');
+    const brandLogoBtn = document.getElementById('brandLogoBtn');
+
+    const navbarToggleBtn = document.querySelector('[data-collapse-toggle="navbar-default"]');
+    const navbarDefault = document.getElementById('navbar-default');
+
+    const navBtnAbout = document.getElementById('navBtnAbout');
+    const aboutModal = document.getElementById('aboutModal');
+    const closeAboutModalBtn = document.getElementById('closeAboutModalBtn');
+    const closeAboutModalBtn2 = document.getElementById('closeAboutModalBtn2');
+
+    const navBtnContact = document.getElementById('navBtnContact');
+    const contactModal = document.getElementById('contactModal');
+    const closeContactModalBtn = document.getElementById('closeContactModalBtn');
+    const closeContactModalBtn2 = document.getElementById('closeContactModalBtn2');
+
+    const consumptionSection = document.getElementById('consumptionSection');
+    const sizeCostingSection = document.getElementById('sizeCostingSection');
+    const retailPricingSection = document.getElementById('retailPricingSection');
+
+    const tabActiveClasses = ["text-white", "bg-brand", "md:bg-transparent", "md:text-fg-brand", "font-semibold"];
+    const tabInactiveClasses = ["text-heading", "hover:bg-neutral-tertiary", "md:hover:bg-transparent", "md:border-0", "md:hover:text-fg-brand", "font-medium"];
+
+    function setTabBtnState(btn, isActive) {
+      if (!btn) return;
+      if (isActive) {
+        btn.classList.remove(...tabInactiveClasses);
+        btn.classList.add(...tabActiveClasses);
+        btn.setAttribute('aria-current', 'page');
+      } else {
+        btn.classList.remove(...tabActiveClasses);
+        btn.classList.add(...tabInactiveClasses);
+        btn.removeAttribute('aria-current');
+      }
+    }
+
+    function toggleMobileNav(forceClose = false) {
+      if (!navbarDefault) return;
+      const isCurrentlyOpen = !navbarDefault.classList.contains('hidden');
+      const shouldOpen = forceClose ? false : !isCurrentlyOpen;
+
+      if (shouldOpen) {
+        navbarDefault.classList.remove('hidden');
+        if (navbarToggleBtn) navbarToggleBtn.setAttribute('aria-expanded', 'true');
+      } else {
+        navbarDefault.classList.add('hidden');
+        if (navbarToggleBtn) navbarToggleBtn.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    if (navbarToggleBtn) {
+      navbarToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleMobileNav();
+      });
+    }
+
+    // Close mobile nav when clicking outside
+    document.addEventListener('click', (e) => {
+      if (navbarDefault && !navbarDefault.classList.contains('hidden')) {
+        if (!navbarDefault.contains(e.target) && (!navbarToggleBtn || !navbarToggleBtn.contains(e.target))) {
+          toggleMobileNav(true);
+        }
+      }
+    });
+
+    // About Modal handlers
+    if (navBtnAbout) {
+      navBtnAbout.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (aboutModal) aboutModal.classList.remove('hidden');
+        toggleMobileNav(true);
+      });
+    }
+    if (closeAboutModalBtn) {
+      closeAboutModalBtn.addEventListener('click', () => {
+        if (aboutModal) aboutModal.classList.add('hidden');
+      });
+    }
+    if (closeAboutModalBtn2) {
+      closeAboutModalBtn2.addEventListener('click', () => {
+        if (aboutModal) aboutModal.classList.add('hidden');
+      });
+    }
+    if (aboutModal) {
+      aboutModal.addEventListener('click', (e) => {
+        if (e.target === aboutModal) aboutModal.classList.add('hidden');
+      });
+    }
+
+    // Contact Modal handlers
+    if (navBtnContact) {
+      navBtnContact.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (contactModal) contactModal.classList.remove('hidden');
+        toggleMobileNav(true);
+      });
+    }
+    if (closeContactModalBtn) {
+      closeContactModalBtn.addEventListener('click', () => {
+        if (contactModal) contactModal.classList.add('hidden');
+      });
+    }
+    if (closeContactModalBtn2) {
+      closeContactModalBtn2.addEventListener('click', () => {
+        if (contactModal) contactModal.classList.add('hidden');
+      });
+    }
+    if (contactModal) {
+      contactModal.addEventListener('click', (e) => {
+        if (e.target === contactModal) contactModal.classList.add('hidden');
+      });
+    }
+
+    function switchTab(activeTab) {
+      // Hide all sections first
+      if (consumptionSection) consumptionSection.classList.add('hidden');
+      if (sizeCostingSection) sizeCostingSection.classList.add('hidden');
+      if (retailPricingSection) retailPricingSection.classList.add('hidden');
+
+      setTabBtnState(tabBtnConsumption, false);
+      setTabBtnState(tabBtnSizeBreakdown, false);
+      setTabBtnState(tabBtnRetailPricing, false);
+
+      if (activeTab === 'consumption') {
+        if (consumptionSection) consumptionSection.classList.remove('hidden');
+        setTabBtnState(tabBtnConsumption, true);
+      } else if (activeTab === 'sizeBreakdown') {
+        if (sizeCostingSection) sizeCostingSection.classList.remove('hidden');
+        setTabBtnState(tabBtnSizeBreakdown, true);
+        calculateSizeCosting();
+      } else if (activeTab === 'retailPricing') {
+        if (retailPricingSection) retailPricingSection.classList.remove('hidden');
+        setTabBtnState(tabBtnRetailPricing, true);
+        calculatePricing();
+      }
+
+      toggleMobileNav(true); // Close dropdown after selection
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    if (tabBtnConsumption) tabBtnConsumption.addEventListener('click', () => switchTab('consumption'));
+    if (tabBtnSizeBreakdown) tabBtnSizeBreakdown.addEventListener('click', () => switchTab('sizeBreakdown'));
+    if (tabBtnRetailPricing) tabBtnRetailPricing.addEventListener('click', () => switchTab('retailPricing'));
+    if (brandLogoBtn) {
+      brandLogoBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTab('consumption');
+      });
+    }
+
+    // Section 2 close button returns to Consumption Calculator
+    const btnCloseSizeSection = document.getElementById('btnCloseSizeSection');
+    if (btnCloseSizeSection) {
+      btnCloseSizeSection.addEventListener('click', () => switchTab('consumption'));
+    }
+
+    // ==========================================
+    // SIZE-WISE COSTING & BREAKDOWN (MINIMI) LOGIC
+    // ==========================================
+
+    const btnResetSizeDefaults = document.getElementById('btnResetSizeDefaults');
+    const boyPoQtyInput = document.getElementById('boyPoQty');
+    const menPoQtyInput = document.getElementById('menPoQty');
+    const boyExactDecimalsToggle = document.getElementById('boyExactDecimalsToggle');
+    const menExactDecimalsToggle = document.getElementById('menExactDecimalsToggle');
+
+    const btnApplyBoyToMain = document.getElementById('btnApplyBoyToMain');
+    const btnApplyMenToMain = document.getElementById('btnApplyMenToMain');
+
+    // Number formatting helper for Boy's
+    // Rule: if 36.5 then 36, if 36.5+ (frac > 0.5) then 37. If exact checkbox enabled: show accurate decimal number
+    function formatBoyQty(val) {
+      if (val === 0) return "0";
+      const isBoyExact = boyExactDecimalsToggle && boyExactDecimalsToggle.checked;
+      if (isBoyExact) {
+        return (val % 1 === 0) ? val.toString() : val.toFixed(2);
+      } else {
+        const frac = val - Math.floor(val);
+        // <= 0.500001 floors (e.g. 36.5 -> 36). > 0.500001 ceils (e.g. 36.51 or 36.67 -> 37)
+        return (frac > 0.500001) ? Math.ceil(val).toString() : Math.floor(val).toString();
+      }
+    }
+
+    // Main Size-Wise Costing Calculation
+    function calculateSizeCosting() {
+      // 1. BOY'S CALCULATIONS
+      const boyPoQty = parseFloat(boyPoQtyInput.value) || 0;
+      const r2_3 = parseFloat(document.getElementById('boyRatio_2_3').value) || 0;
+      const r4_5 = parseFloat(document.getElementById('boyRatio_4_5').value) || 0;
+      const r6_7 = parseFloat(document.getElementById('boyRatio_6_7').value) || 0;
+      const r8_9 = parseFloat(document.getElementById('boyRatio_8_9').value) || 0;
+      const r10_11 = parseFloat(document.getElementById('boyRatio_10_11').value) || 0;
+      const r12_13 = parseFloat(document.getElementById('boyRatio_12_13').value) || 0;
+      const r14_15 = parseFloat(document.getElementById('boyRatio_14_15').value) || 0;
+
+      const boyTotalRatio = r2_3 + r4_5 + r6_7 + r8_9 + r10_11 + r12_13 + r14_15;
+
+      const q2_3 = boyTotalRatio > 0 ? (boyPoQty / boyTotalRatio) * r2_3 : 0;
+      const q4_5 = boyTotalRatio > 0 ? (boyPoQty / boyTotalRatio) * r4_5 : 0;
+      const q6_7 = boyTotalRatio > 0 ? (boyPoQty / boyTotalRatio) * r6_7 : 0;
+      const q8_9 = boyTotalRatio > 0 ? (boyPoQty / boyTotalRatio) * r8_9 : 0;
+      const q10_11 = boyTotalRatio > 0 ? (boyPoQty / boyTotalRatio) * r10_11 : 0;
+      const q12_13 = boyTotalRatio > 0 ? (boyPoQty / boyTotalRatio) * r12_13 : 0;
+      const q14_15 = boyTotalRatio > 0 ? (boyPoQty / boyTotalRatio) * r14_15 : 0;
+
+      const isBoyExact = boyExactDecimalsToggle && boyExactDecimalsToggle.checked;
+
+      document.getElementById('boyQty_2_3').textContent = formatBoyQty(q2_3);
+      document.getElementById('boyQty_4_5').textContent = formatBoyQty(q4_5);
+      document.getElementById('boyQty_6_7').textContent = formatBoyQty(q6_7);
+      document.getElementById('boyQty_8_9').textContent = formatBoyQty(q8_9);
+      document.getElementById('boyQty_10_11').textContent = formatBoyQty(q10_11);
+      document.getElementById('boyQty_12_13').textContent = formatBoyQty(q12_13);
+      document.getElementById('boyQty_14_15').textContent = formatBoyQty(q14_15);
+
+      document.getElementById('boyTotalRatio').textContent = Number.isInteger(boyTotalRatio) ? boyTotalRatio : boyTotalRatio.toFixed(1);
+
+      if (isBoyExact) {
+        document.getElementById('boyTotalQty').textContent = (boyPoQty % 1 === 0) ? Math.round(boyPoQty) : boyPoQty.toFixed(2);
+      } else {
+        const sumBoyCeils = [q2_3, q4_5, q6_7, q8_9, q10_11, q12_13, q14_15].reduce((acc, v) => {
+          const frac = v - Math.floor(v);
+          return acc + ((frac > 0.500001) ? Math.ceil(v) : Math.floor(v));
+        }, 0);
+        document.getElementById('boyTotalQty').textContent = sumBoyCeils;
+      }
+
+      // Category / Sub-Group Allocations (from Excel Sheet2)
+      // Toddler = 2-3Y + 4-5Y
+      // Kids = 6-7Y + 8-9Y
+      // Boys = 10-11Y + 12-13Y + 14-15Y
+      const toddlerQty = q2_3 + q4_5;
+      const kidsQty = q6_7 + q8_9;
+      const boysQty = q10_11 + q12_13 + q14_15;
+      const boyGroupTotal = toddlerQty + kidsQty + boysQty;
+
+      const toddlerCons = parseFloat(document.getElementById('toddlerConsumption').value) || 0;
+      const kidsCons = parseFloat(document.getElementById('kidsConsumption').value) || 0;
+      const boysCons = parseFloat(document.getElementById('boysConsumption').value) || 0;
+
+      const toddlerFabric = toddlerQty * toddlerCons;
+      const kidsFabric = kidsQty * kidsCons;
+      const boysFabric = boysQty * boysCons;
+      const boyTotalFabric = toddlerFabric + kidsFabric + boysFabric;
+
+      // Fix: If boyPoQty is 0, compute inherent weighted consumption rate from ratios so it always displays!
+      const toddlerRatioSum = r2_3 + r4_5;
+      const kidsRatioSum = r6_7 + r8_9;
+      const boysRatioSum = r10_11 + r12_13 + r14_15;
+      const boyAvgCons = boyTotalRatio > 0
+        ? ((toddlerRatioSum * toddlerCons + kidsRatioSum * kidsCons + boysRatioSum * boysCons) / boyTotalRatio)
+        : 0;
+
+      document.getElementById('toddlerPoQty').textContent = formatBoyQty(toddlerQty);
+      document.getElementById('kidsPoQty').textContent = formatBoyQty(kidsQty);
+      document.getElementById('boysPoQty').textContent = formatBoyQty(boysQty);
+      document.getElementById('boyGroupTotalQty').textContent = Math.round(boyGroupTotal);
+
+      document.getElementById('toddlerReqFabric').textContent = toddlerFabric.toFixed(2);
+      document.getElementById('kidsReqFabric').textContent = kidsFabric.toFixed(2);
+      document.getElementById('boysReqFabric').textContent = boysFabric.toFixed(2);
+      document.getElementById('boyTotalFabric').textContent = boyTotalFabric.toFixed(2);
+      document.getElementById('boyAvgConsumption').textContent = boyAvgCons.toFixed(3);
+
+      // 2. MEN'S CALCULATIONS (With XXL = 1 default and XXXL = 0 default)
+      const menPoQty = parseFloat(menPoQtyInput.value) || 0;
+      const rS = parseFloat(document.getElementById('menRatio_S').value) || 0;
+      const rM = parseFloat(document.getElementById('menRatio_M').value) || 0;
+      const rL = parseFloat(document.getElementById('menRatio_L').value) || 0;
+      const rXL = parseFloat(document.getElementById('menRatio_XL').value) || 0;
+      const rXXL = parseFloat(document.getElementById('menRatio_XXL').value) || 0;
+      const rXXXL = parseFloat(document.getElementById('menRatio_XXXL').value) || 0;
+
+      const menTotalRatio = rS + rM + rL + rXL + rXXL + rXXXL;
+
+      const qS = menTotalRatio > 0 ? (menPoQty / menTotalRatio) * rS : 0;
+      const qM = menTotalRatio > 0 ? (menPoQty / menTotalRatio) * rM : 0;
+      const qL = menTotalRatio > 0 ? (menPoQty / menTotalRatio) * rL : 0;
+      const qXL = menTotalRatio > 0 ? (menPoQty / menTotalRatio) * rXL : 0;
+      const qXXL = menTotalRatio > 0 ? (menPoQty / menTotalRatio) * rXXL : 0;
+      const qXXXL = menTotalRatio > 0 ? (menPoQty / menTotalRatio) * rXXXL : 0;
+
+      const isExactDecimals = menExactDecimalsToggle && menExactDecimalsToggle.checked;
+
+      function formatMenQty(val) {
+        if (val === 0) return "0";
+        if (isExactDecimals) {
+          return (val % 1 === 0) ? val.toString() : val.toFixed(2);
+        } else {
+          return Math.ceil(val).toString();
+        }
+      }
+
+      document.getElementById('menQty_S').textContent = formatMenQty(qS);
+      document.getElementById('menQty_M').textContent = formatMenQty(qM);
+      document.getElementById('menQty_L').textContent = formatMenQty(qL);
+      document.getElementById('menQty_XL').textContent = formatMenQty(qXL);
+      document.getElementById('menQty_XXL').textContent = formatMenQty(qXXL);
+      document.getElementById('menQty_XXXL').textContent = formatMenQty(qXXXL);
+
+      document.getElementById('menTotalRatio').textContent = Number.isInteger(menTotalRatio) ? menTotalRatio : menTotalRatio.toFixed(1);
+
+      if (isExactDecimals) {
+        document.getElementById('menTotalQty').textContent = Math.round(qS + qM + qL + qXL + qXXL + qXXXL);
+      } else {
+        const sumCeils = Math.ceil(qS) + Math.ceil(qM) + Math.ceil(qL) + Math.ceil(qXL) + Math.ceil(qXXL) + Math.ceil(qXXXL);
+        document.getElementById('menTotalQty').textContent = sumCeils;
+      }
+
+      const menCons = parseFloat(document.getElementById('menConsumption').value) || 0;
+      const menReqFabric = menPoQty * menCons;
+
+      document.getElementById('menTablePoQty').textContent = Math.round(menPoQty);
+      document.getElementById('menReqFabric').textContent = menReqFabric.toFixed(2);
+      document.getElementById('menTotalFabric').textContent = Math.round(menReqFabric);
+      document.getElementById('menAvgConsumptionDisplay').textContent = menCons.toFixed(3);
+
+      // 3. CONSOLIDATED GRAND TOTAL
+      const combinedPcs = boyPoQty + menPoQty;
+      const combinedFabric = boyTotalFabric + menReqFabric;
+      const combinedAvgCons = combinedPcs > 0 ? (combinedFabric / combinedPcs) : 0;
+      const combinedMeters = combinedFabric * 0.9144;
+
+      document.getElementById('combinedTotalPcs').textContent = combinedPcs.toLocaleString('en-US');
+      document.getElementById('combinedTotalFabric').textContent = combinedFabric.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+      document.getElementById('combinedAvgConsumption').textContent = combinedAvgCons.toFixed(3);
+      document.getElementById('combinedFabricMeters').textContent = combinedMeters.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+      const btnSyncFabricVal = document.getElementById('btnSyncFabricVal');
+      if (btnSyncFabricVal) {
+        btnSyncFabricVal.textContent = Math.round(combinedFabric).toLocaleString('en-US');
+      }
+
+      // 4. IN-HOUSE FABRIC PO ALLOCATION PLANNER
+      calculateInHouseAllocation(boyAvgCons, menCons, combinedFabric);
+    }
+
+    // ==========================================
+    // IN-HOUSE FABRIC PO ALLOCATION PLANNER LOGIC
+    // ==========================================
+
+    function calculateInHouseAllocation(cachedBoyAvgCons, cachedMenCons, cachedCombinedFabric) {
+      const inHouseTotalFabricInput = document.getElementById('inHouseTotalFabric');
+      const inHouseBoyPercentInput = document.getElementById('inHouseBoyPercent');
+      const inHouseMenPercentInput = document.getElementById('inHouseMenPercent');
+
+      if (!inHouseTotalFabricInput || !inHouseBoyPercentInput || !inHouseMenPercentInput) return;
+
+      const availableFabric = parseFloat(inHouseTotalFabricInput.value) || 0;
+      const boyPct = parseFloat(inHouseBoyPercentInput.value) || 0;
+      const menPct = parseFloat(inHouseMenPercentInput.value) || 0;
+      const totalPct = boyPct + menPct;
+
+      const boyAvgCons = (typeof cachedBoyAvgCons === 'number')
+        ? cachedBoyAvgCons
+        : (parseFloat(document.getElementById('boyAvgConsumption').textContent) || 0);
+      const menCons = (typeof cachedMenCons === 'number')
+        ? cachedMenCons
+        : (parseFloat(document.getElementById('menConsumption').value) || 0);
+
+      // Auto update rate cards
+      document.getElementById('inHouseBoyAvgCons').textContent = boyAvgCons.toFixed(3);
+      document.getElementById('inHouseMenAvgCons').textContent = menCons.toFixed(3);
+      document.getElementById('inHouseRowBoyCons').textContent = boyAvgCons.toFixed(3);
+      document.getElementById('inHouseRowMenCons').textContent = menCons.toFixed(3);
+
+      // Fabric Allocations
+      const fabricBoy = availableFabric * (boyPct / 100);
+      const fabricMen = availableFabric * (menPct / 100);
+      const totalAllocated = availableFabric * (totalPct / 100);
+
+      // What will be the PO QTY?
+      const boyQtyExact = boyAvgCons > 0 ? (fabricBoy / boyAvgCons) : 0;
+      const menQtyExact = menCons > 0 ? (fabricMen / menCons) : 0;
+
+      // Planned integer pieces
+      const boyQtyInt = Math.round(boyQtyExact);
+      const menQtyInt = Math.round(menQtyExact);
+      const totalPoQtyInt = boyQtyInt + menQtyInt;
+
+      // Update Displays
+      document.getElementById('inHouseBoyPercentBadge').textContent = boyPct + '%';
+      document.getElementById('inHouseMenPercentBadge').textContent = menPct + '%';
+      document.getElementById('inHouseRowBoyPct').textContent = boyPct + '%';
+      document.getElementById('inHouseRowMenPct').textContent = menPct + '%';
+      document.getElementById('inHouseRowTotalPct').textContent = totalPct + '%';
+
+      document.getElementById('inHouseBoyFabric').textContent = fabricBoy.toFixed(2);
+      document.getElementById('inHouseMenFabric').textContent = fabricMen.toFixed(2);
+      document.getElementById('inHouseTotalAllocatedFabric').textContent = totalAllocated.toFixed(2);
+
+      document.getElementById('inHouseBoyPoQty').textContent = boyQtyInt.toLocaleString('en-US');
+      document.getElementById('inHouseBoyPoQtyExact').textContent = boyQtyExact.toFixed(2) + ' exact';
+
+      document.getElementById('inHouseMenPoQty').textContent = menQtyInt.toLocaleString('en-US');
+      document.getElementById('inHouseMenPoQtyExact').textContent = menQtyExact.toFixed(2) + ' exact';
+
+      document.getElementById('inHouseTotalPoQty').textContent = totalPoQtyInt.toLocaleString('en-US') + ' pcs';
+      document.getElementById('inHouseTotalPoQtyExact').textContent = (boyQtyExact + menQtyExact).toFixed(2) + ' exact total';
+    }
+
+    // Attach listeners to In-House Fabric inputs
+    const inHouseTriggers = document.querySelectorAll('.inhouse-calc-trigger');
+    inHouseTriggers.forEach(input => {
+      input.addEventListener('input', () => calculateInHouseAllocation());
+    });
+
+    // Sync Consolidated Fabric into In-House Fabric Available
+    const btnSyncConsolidatedFabric = document.getElementById('btnSyncConsolidatedFabric');
+    if (btnSyncConsolidatedFabric) {
+      btnSyncConsolidatedFabric.addEventListener('click', () => {
+        const boyFabric = parseFloat(document.getElementById('boyTotalFabric').textContent) || 0;
+        const menFabric = parseFloat(document.getElementById('menReqFabric').textContent) || 0;
+        const totalReq = Math.round(boyFabric + menFabric);
+
+        document.getElementById('inHouseTotalFabric').value = totalReq > 0 ? totalReq : 1875;
+        calculateInHouseAllocation();
+      });
+    }
+
+    // Apply In-House Planned PO Quantities into Boy's & Men's Inputs
+    const btnApplyInHouseToPo = document.getElementById('btnApplyInHouseToPo');
+    if (btnApplyInHouseToPo) {
+      btnApplyInHouseToPo.addEventListener('click', () => {
+        const boyPlannedText = document.getElementById('inHouseBoyPoQty').textContent.replace(/,/g, '');
+        const menPlannedText = document.getElementById('inHouseMenPoQty').textContent.replace(/,/g, '');
+
+        const boyPlanned = parseInt(boyPlannedText, 10) || 0;
+        const menPlanned = parseInt(menPlannedText, 10) || 0;
+
+        if (boyPlanned > 0) boyPoQtyInput.value = boyPlanned;
+        if (menPlanned > 0) menPoQtyInput.value = menPlanned;
+
+        calculateSizeCosting();
+
+        btnApplyInHouseToPo.classList.add('bg-emerald-600', 'text-white');
+        setTimeout(() => {
+          btnApplyInHouseToPo.classList.remove('bg-emerald-600');
+        }, 1200);
+      });
+    }
+
+    // Attach live recalculation listeners to all size costing inputs
+    const sizeInputs = document.querySelectorAll('#sizeCostingSection input:not(.inhouse-calc-trigger)');
+    sizeInputs.forEach(input => {
+      input.addEventListener('input', calculateSizeCosting);
+    });
+
+    if (boyExactDecimalsToggle) {
+      boyExactDecimalsToggle.addEventListener('change', calculateSizeCosting);
+    }
+
+    if (menExactDecimalsToggle) {
+      menExactDecimalsToggle.addEventListener('change', calculateSizeCosting);
+    }
+
+    // Reset Defaults Function
+    btnResetSizeDefaults.addEventListener('click', () => {
+      boyPoQtyInput.value = 500;
+      document.getElementById('boyRatio_2_3').value = 1;
+      document.getElementById('boyRatio_4_5').value = 1.5;
+      document.getElementById('boyRatio_6_7').value = 1.5;
+      document.getElementById('boyRatio_8_9').value = 2;
+      document.getElementById('boyRatio_10_11').value = 3;
+      document.getElementById('boyRatio_12_13').value = 1;
+      document.getElementById('boyRatio_14_15').value = 0;
+
+      document.getElementById('toddlerConsumption').value = 1;
+      document.getElementById('kidsConsumption').value = 2;
+      document.getElementById('boysConsumption').value = 2;
+
+      menPoQtyInput.value = 500;
+      document.getElementById('menRatio_S').value = 1;
+      document.getElementById('menRatio_M').value = 3;
+      document.getElementById('menRatio_L').value = 4;
+      document.getElementById('menRatio_XL').value = 2;
+      document.getElementById('menRatio_XXL').value = 1; // Default 1 as requested
+      document.getElementById('menRatio_XXXL').value = 0; // Default 0 as requested
+
+      document.getElementById('menConsumption').value = 2;
+
+      if (boyExactDecimalsToggle) boyExactDecimalsToggle.checked = false;
+      if (menExactDecimalsToggle) menExactDecimalsToggle.checked = false;
+
+      document.getElementById('inHouseTotalFabric').value = 1875;
+      document.getElementById('inHouseBoyPercent').value = 50;
+      document.getElementById('inHouseMenPercent').value = 50;
+
+      calculateSizeCosting();
+    });
+
+    // Quick Apply to Main Calculator Helpers
+    function applyRateToMainCalculator(rate, orderQty) {
+      switchTab('consumption');
+
+      if (useManualToggle.checked) {
+        manualConsumptionInput.value = rate.toFixed(3);
+      } else {
+        cadConsumptionInput.value = rate.toFixed(3);
+      }
+      if (orderQty > 0) {
+        orderQtyInput.value = Math.round(orderQty);
+      }
+      calculateConsumption();
+
+      const resActualCard = document.getElementById('resActualConsumption').closest('.bg-gradient-to-br');
+      if (resActualCard) {
+        resActualCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        resActualCard.classList.add('ring-4', 'ring-blue-400');
+        setTimeout(() => {
+          resActualCard.classList.remove('ring-4', 'ring-blue-400');
+        }, 1500);
+      }
+    }
+
+    btnApplyBoyToMain.addEventListener('click', () => {
+      const boyAvg = parseFloat(document.getElementById('boyAvgConsumption').textContent) || 0;
+      const boyQty = parseFloat(boyPoQtyInput.value) || 0;
+      applyRateToMainCalculator(boyAvg, boyQty);
+    });
+
+    btnApplyMenToMain.addEventListener('click', () => {
+      const menCons = parseFloat(document.getElementById('menConsumption').value) || 0;
+      const menQty = parseFloat(menPoQtyInput.value) || 0;
+      applyRateToMainCalculator(menCons, menQty);
+    });
+
+    // ==========================================
+    // SECTION 3: COMMERCIAL PRICING & BARCODE LOGIC (Excel Sheet 2)
+    // ==========================================
+
+    const pricingCategories = ['Toddler', 'Kids', 'Boys', 'Mens', 'R'];
+    const btnSyncPoFromBreakdown = document.getElementById('btnSyncPoFromBreakdown');
+    const btnResetPricingDefaults = document.getElementById('btnResetPricingDefaults');
+
+    function calculatePricing() {
+      let sumPoQty = 0;
+      let grandTotalActual = 0;
+      let grandTotalBarcode = 0;
+
+      pricingCategories.forEach(cat => {
+        const actualInput = document.getElementById(`priceActual_${cat}`);
+        const barcodeInput = document.getElementById(`priceBarcode_${cat}`);
+        const poQtyInput = document.getElementById(`pricePoQty_${cat}`);
+
+        const actualPrice = parseFloat(actualInput.value) || 0;
+        const barcodePrice = parseFloat(barcodeInput.value) || 0;
+        const qty = parseFloat(poQtyInput.value) || 0;
+
+        // Excel formula: Price * Qty * 0.9 (net 90% realization factor)
+        const totalActual = Math.round(actualPrice * qty * 0.9);
+        const totalBarcode = Math.round(barcodePrice * qty * 0.9);
+        const diff = totalBarcode - totalActual;
+
+        sumPoQty += qty;
+        grandTotalActual += totalActual;
+        grandTotalBarcode += totalBarcode;
+
+        document.getElementById(`priceTotalActual_${cat}`).textContent = totalActual.toLocaleString('en-US');
+        document.getElementById(`priceTotalBarcode_${cat}`).textContent = totalBarcode.toLocaleString('en-US');
+
+        const diffEl = document.getElementById(`priceDiff_${cat}`);
+        if (diff > 0) {
+          diffEl.textContent = "+" + diff.toLocaleString('en-US');
+          diffEl.className = "py-2.5 px-3 text-right font-mono font-bold text-emerald-700";
+        } else if (diff < 0) {
+          diffEl.textContent = diff.toLocaleString('en-US');
+          diffEl.className = "py-2.5 px-3 text-right font-mono font-bold text-rose-600";
+        } else {
+          diffEl.textContent = "0";
+          diffEl.className = "py-2.5 px-3 text-right font-mono font-bold text-slate-500";
+        }
+      });
+
+      const grandDiff = grandTotalBarcode - grandTotalActual;
+
+      // Table Footer Totals (matching image: 742, 1592653, 1718622, 125969)
+      document.getElementById('priceTotalPoQty').textContent = Math.round(sumPoQty).toLocaleString('en-US');
+      document.getElementById('priceGrandTotalActual').textContent = grandTotalActual.toLocaleString('en-US');
+      document.getElementById('priceGrandTotalBarcode').textContent = grandTotalBarcode.toLocaleString('en-US');
+
+      // Top KPI Cards
+      document.getElementById('kpiPricingPoQty').textContent = Math.round(sumPoQty).toLocaleString('en-US');
+      document.getElementById('kpiPricingTotalActual').textContent = grandTotalActual.toLocaleString('en-US');
+      document.getElementById('kpiPricingTotalBarcode').textContent = grandTotalBarcode.toLocaleString('en-US');
+
+      // Realization Difference Logic (Show + if profit, - if loss, red if negative)
+      const diffSignEl = document.getElementById('kpiPricingDiffSign');
+      const diffValEl = document.getElementById('kpiPricingTotalDiff');
+      const diffCardEl = document.getElementById('kpiPricingDiffCard');
+      const diffTitleEl = document.getElementById('kpiPricingDiffTitle');
+      const diffLabelEl = document.getElementById('kpiPricingDiffLabel');
+      const footerDiffEl = document.getElementById('priceGrandTotalDiff');
+
+      const pctDiff = grandTotalActual > 0 ? ((grandDiff / grandTotalActual) * 100) : 0;
+
+      if (grandDiff > 0) {
+        if (diffSignEl) {
+          diffSignEl.textContent = "+";
+          diffSignEl.className = "text-emerald-700 font-bold";
+        }
+        if (diffValEl) {
+          diffValEl.textContent = grandDiff.toLocaleString('en-US');
+          diffValEl.className = "text-2xl font-black text-emerald-700 font-mono";
+        }
+        if (diffTitleEl) diffTitleEl.className = "text-[11px] font-bold text-emerald-800 uppercase tracking-wider block";
+        if (diffCardEl) diffCardEl.className = "bg-gradient-to-br from-emerald-50 to-teal-50 p-4 rounded-xl border border-emerald-200 shadow-xs transition-colors";
+        if (diffLabelEl) {
+          diffLabelEl.textContent = `+${pctDiff.toFixed(2)}% Revenue Gain`;
+          diffLabelEl.className = "text-[10px] text-emerald-600 font-bold block";
+        }
+        if (footerDiffEl) {
+          footerDiffEl.textContent = "+" + grandDiff.toLocaleString('en-US');
+          footerDiffEl.className = "py-3 px-3 text-right text-sm sm:text-base font-black font-mono text-emerald-800";
+        }
+      } else if (grandDiff < 0) {
+        if (diffSignEl) {
+          diffSignEl.textContent = "-";
+          diffSignEl.className = "text-rose-600 font-bold";
+        }
+        if (diffValEl) {
+          diffValEl.textContent = Math.abs(grandDiff).toLocaleString('en-US');
+          diffValEl.className = "text-2xl font-black text-rose-600 font-mono";
+        }
+        if (diffTitleEl) diffTitleEl.className = "text-[11px] font-bold text-rose-800 uppercase tracking-wider block";
+        if (diffCardEl) diffCardEl.className = "bg-gradient-to-br from-rose-50 to-red-50 p-4 rounded-xl border border-rose-300 shadow-xs transition-colors";
+        if (diffLabelEl) {
+          diffLabelEl.textContent = `${pctDiff.toFixed(2)}% Revenue Loss`;
+          diffLabelEl.className = "text-[10px] text-rose-600 font-bold block";
+        }
+        if (footerDiffEl) {
+          footerDiffEl.textContent = grandDiff.toLocaleString('en-US');
+          footerDiffEl.className = "py-3 px-3 text-right text-sm sm:text-base font-black font-mono text-rose-600";
+        }
+      } else {
+        if (diffSignEl) {
+          diffSignEl.textContent = "";
+          diffSignEl.className = "text-slate-600";
+        }
+        if (diffValEl) {
+          diffValEl.textContent = "0";
+          diffValEl.className = "text-2xl font-black text-slate-600 font-mono";
+        }
+        if (diffTitleEl) diffTitleEl.className = "text-[11px] font-bold text-slate-600 uppercase tracking-wider block";
+        if (diffCardEl) diffCardEl.className = "bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-xs transition-colors";
+        if (diffLabelEl) {
+          diffLabelEl.textContent = "0.00% Breakeven";
+          diffLabelEl.className = "text-[10px] text-slate-500 font-bold block";
+        }
+        if (footerDiffEl) {
+          footerDiffEl.textContent = "0";
+          footerDiffEl.className = "py-3 px-3 text-right text-sm sm:text-base font-black font-mono text-slate-600";
+        }
+      }
+    }
+
+    // Attach listeners to pricing inputs
+    const pricingInputs = document.querySelectorAll('#retailPricingSection input');
+    pricingInputs.forEach(input => {
+      input.addEventListener('input', calculatePricing);
+    });
+
+    // Reset Defaults Function for Commercial Pricing
+    btnResetPricingDefaults.addEventListener('click', () => {
+      document.getElementById('priceActual_Toddler').value = 1483.31;
+      document.getElementById('priceBarcode_Toddler').value = 1690;
+      document.getElementById('pricePoQty_Toddler').value = 75;
+
+      document.getElementById('priceActual_Kids').value = 1762.41;
+      document.getElementById('priceBarcode_Kids').value = 1890;
+      document.getElementById('pricePoQty_Kids').value = 105;
+
+      document.getElementById('priceActual_Boys').value = 2011.57;
+      document.getElementById('priceBarcode_Boys').value = 2190;
+      document.getElementById('pricePoQty_Boys').value = 120;
+
+      document.getElementById('priceActual_Mens').value = 2787.16;
+      document.getElementById('priceBarcode_Mens').value = 2990;
+      document.getElementById('pricePoQty_Mens').value = 442;
+
+      document.getElementById('priceActual_R').value = 0;
+      document.getElementById('priceBarcode_R').value = 0;
+      document.getElementById('pricePoQty_R').value = 0;
+
+      calculatePricing();
+    });
+
+    // Sync PO Qty from Size Breakdown
+    btnSyncPoFromBreakdown.addEventListener('click', () => {
+      const toddlerVal = parseFloat(document.getElementById('toddlerPoQty').textContent) || 0;
+      const kidsVal = parseFloat(document.getElementById('kidsPoQty').textContent) || 0;
+      const boysVal = parseFloat(document.getElementById('boysPoQty').textContent) || 0;
+      const mensVal = parseFloat(menPoQtyInput.value) || 0;
+
+      document.getElementById('pricePoQty_Toddler').value = Math.round(toddlerVal);
+      document.getElementById('pricePoQty_Kids').value = Math.round(kidsVal);
+      document.getElementById('pricePoQty_Boys').value = Math.round(boysVal);
+      document.getElementById('pricePoQty_Mens').value = Math.round(mensVal);
+
+      calculatePricing();
+    });
+
+    // Initial Calculations
+    calculateSizeCosting();
+    calculatePricing();
   </script>
+  <!-- Flowbite JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 </body>
+
 </html>
