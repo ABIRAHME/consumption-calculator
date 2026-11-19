@@ -1084,6 +1084,16 @@
                 </div>
               </div>
             </div>
+
+            <div class="mt-4">
+              <label class="block text-xs font-medium text-slate-700 mb-1" for="fabricGsm">Fabric Weight (GSM)</label>
+              <div class="relative">
+                <input type="number" min="0" step="1" id="fabricGsm" value="0"
+                  class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                <span class="absolute right-3 top-2.5 text-xs text-slate-400 font-medium">g/m²</span>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1">Required to calculate fabric consumption by weight.</p>
+            </div>
           </div>
 
           <!-- Inhoused Fabric & Order Quantity Grid -->
@@ -1126,19 +1136,25 @@
             <span class="text-xs font-semibold uppercase tracking-wider text-blue-300">Automatic Results</span>
             <h2 class="text-xl font-bold">Final Fabric Consumption</h2>
           </div>
-          <span id="badgeConsumptionSource"
-            class="bg-amber-400/20 text-amber-300 text-xs px-2.5 py-1 rounded-full border border-amber-400/30 font-semibold">
-            Calculated Formula
-          </span>
+          <div class="flex items-center gap-2">
+            <label for="consumptionDisplayUnit" class="sr-only">Consumption display unit</label>
+            <select id="consumptionDisplayUnit" class="bg-white/10 border border-white/20 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-white focus:ring-2 focus:ring-blue-300">
+              <option value="yd" class="text-slate-900">Show in yd</option>
+              <option value="kg" class="text-slate-900">Show in kg</option>
+            </select>
+            <span id="badgeConsumptionSource"
+              class="bg-amber-400/20 text-amber-300 text-xs px-2.5 py-1 rounded-full border border-amber-400/30 font-semibold">Calculated Formula</span>
+          </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
           <div>
             <div class="text-4xl sm:text-5xl font-black tracking-tight text-white flex items-baseline gap-2">
               <span id="resActualConsumption">0.000</span>
-              <span class="text-lg font-medium text-blue-300">yd/pcs</span>
+              <span id="resConsumptionUnit" class="text-lg font-medium text-blue-300">yd/pcs</span>
             </div>
             <p class="text-xs text-slate-300 mt-1">Final required consumption per garment piece</p>
+            <p id="consumptionKgHint" class="text-[11px] text-amber-200 mt-1" aria-live="polite"></p>
           </div>
 
           <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/10 space-y-2">
@@ -1243,7 +1259,7 @@
             <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
               <span class="text-[10px] text-slate-500 uppercase font-semibold block">Active Rate</span>
               <span id="resCustomActiveRate" class="text-base font-bold text-slate-900">0.000</span>
-              <span class="text-[11px] text-slate-400 block">yd/pcs</span>
+              <span id="resCustomActiveRateUnit" class="text-[11px] text-slate-400 block">yd/pcs</span>
             </div>
             <div class="bg-blue-50 p-3 rounded-xl border border-blue-100">
               <span class="text-[10px] text-blue-700 uppercase font-semibold block">Rolls (100yd)</span>
@@ -1381,7 +1397,7 @@
           <span id="kpiPricingPoQty">742</span>
           <span class="text-xs text-slate-500 font-semibold">pcs</span>
         </div>
-        <span class="text-[10px] text-slate-400">Toddler, Kids, Boys, Mens</span>
+        <span class="text-[10px] text-slate-400">All nine categories</span>
       </div>
 
       <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
@@ -1443,112 +1459,86 @@
             </tr>
           </thead>
           <tbody id="pricingTableBody" class="divide-y divide-slate-100 text-slate-800 font-medium">
-            <!-- Row 1: Toddler -->
             <tr class="hover:bg-slate-50 transition">
               <td class="py-2.5 px-3 font-bold text-slate-900">Toddler</td>
-              <td class="py-2.5 px-3 text-right">
-                <input type="number" step="0.01" id="priceActual_Toddler" value="1483.31"
-                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
-              </td>
-              <td class="py-2.5 px-3 text-right">
-                <input type="number" step="1" id="priceBarcode_Toddler" value="1690"
-                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
-              </td>
-              <td class="py-2.5 px-3 text-right">
-                <input type="number" step="1" id="pricePoQty_Toddler" value="75"
-                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
-              </td>
-              <td id="priceTotalActual_Toddler" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">100123
-              </td>
-              <td id="priceTotalBarcode_Toddler" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">114075
-              </td>
-              <td id="priceDiff_Toddler" class="py-2.5 px-3 text-right font-mono font-bold text-emerald-700">+13952</td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Toddler" value="1483.31" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Toddler" value="1690" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Toddler" value="75" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td id="priceTotalActual_Toddler" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
+              <td id="priceTotalBarcode_Toddler" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
+              <td id="priceDiff_Toddler" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
             </tr>
-
-            <!-- Row 2: Kids -->
             <tr class="hover:bg-slate-50 transition">
               <td class="py-2.5 px-3 font-bold text-slate-900">Kids</td>
-              <td class="py-2.5 px-3 text-right">
-                <input type="number" step="0.01" id="priceActual_Kids" value="1762.41"
-                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
-              </td>
-              <td class="py-2.5 px-3 text-right">
-                <input type="number" step="1" id="priceBarcode_Kids" value="1890"
-                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
-              </td>
-              <td class="py-2.5 px-3 text-right">
-                <input type="number" step="1" id="pricePoQty_Kids" value="105"
-                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
-              </td>
-              <td id="priceTotalActual_Kids" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">166548
-              </td>
-              <td id="priceTotalBarcode_Kids" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">178605
-              </td>
-              <td id="priceDiff_Kids" class="py-2.5 px-3 text-right font-mono font-bold text-emerald-700">+12057</td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Kids" value="1762.41" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Kids" value="1890" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Kids" value="105" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td id="priceTotalActual_Kids" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
+              <td id="priceTotalBarcode_Kids" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
+              <td id="priceDiff_Kids" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
             </tr>
-
-            <!-- Row 3: Boys -->
             <tr class="hover:bg-slate-50 transition">
               <td class="py-2.5 px-3 font-bold text-slate-900">Boys</td>
-              <td class="py-2.5 px-3 text-right">
-                <input type="number" step="0.01" id="priceActual_Boys" value="2011.57"
-                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
-              </td>
-              <td class="py-2.5 px-3 text-right">
-                <input type="number" step="1" id="priceBarcode_Boys" value="2190"
-                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
-              </td>
-              <td class="py-2.5 px-3 text-right">
-                <input type="number" step="1" id="pricePoQty_Boys" value="120"
-                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
-              </td>
-              <td id="priceTotalActual_Boys" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">217250
-              </td>
-              <td id="priceTotalBarcode_Boys" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">236520
-              </td>
-              <td id="priceDiff_Boys" class="py-2.5 px-3 text-right font-mono font-bold text-emerald-700">+19270</td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Boys" value="2011.57" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Boys" value="2190" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Boys" value="120" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td id="priceTotalActual_Boys" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
+              <td id="priceTotalBarcode_Boys" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
+              <td id="priceDiff_Boys" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
             </tr>
-
-            <!-- Row 4: Mens s -->
             <tr class="hover:bg-slate-50 transition">
-              <td class="py-2.5 px-3 font-bold text-slate-900">Mens s</td>
-              <td class="py-2.5 px-3 text-right">
-                <input type="number" step="0.01" id="priceActual_Mens" value="2787.16"
-                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
-              </td>
-              <td class="py-2.5 px-3 text-right">
-                <input type="number" step="1" id="priceBarcode_Mens" value="2990"
-                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
-              </td>
-              <td class="py-2.5 px-3 text-right">
-                <input type="number" step="1" id="pricePoQty_Mens" value="442"
-                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
-              </td>
-              <td id="priceTotalActual_Mens" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">1108732
-              </td>
-              <td id="priceTotalBarcode_Mens" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">1189422
-              </td>
-              <td id="priceDiff_Mens" class="py-2.5 px-3 text-right font-mono font-bold text-emerald-700">+80690</td>
+              <td class="py-2.5 px-3 font-bold text-slate-900">Mens</td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Mens" value="2787.16" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Mens" value="2990" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Mens" value="442" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td id="priceTotalActual_Mens" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
+              <td id="priceTotalBarcode_Mens" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
+              <td id="priceDiff_Mens" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
             </tr>
-
-            <!-- Row 5: R -->
             <tr class="hover:bg-slate-50 transition">
               <td class="py-2.5 px-3 font-bold text-slate-900">R</td>
-              <td class="py-2.5 px-3 text-right">
-                <input type="number" step="0.01" id="priceActual_R" value="0"
-                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-400 focus:ring-1 focus:ring-blue-500 pricing-input">
-              </td>
-              <td class="py-2.5 px-3 text-right">
-                <input type="number" step="1" id="priceBarcode_R" value="0"
-                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-400 focus:ring-1 focus:ring-blue-500 pricing-input">
-              </td>
-              <td class="py-2.5 px-3 text-right">
-                <input type="number" step="1" id="pricePoQty_R" value="0"
-                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-400 focus:ring-1 focus:ring-blue-500 pricing-input">
-              </td>
-              <td id="priceTotalActual_R" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
-              <td id="priceTotalBarcode_R" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_R" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_R" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_R" value="0" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td id="priceTotalActual_R" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
+              <td id="priceTotalBarcode_R" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
               <td id="priceDiff_R" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-3 font-bold text-slate-900">Toddler’s Girls</td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_ToddlerGirls" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_ToddlerGirls" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_ToddlerGirls" value="0" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td id="priceTotalActual_ToddlerGirls" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
+              <td id="priceTotalBarcode_ToddlerGirls" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
+              <td id="priceDiff_ToddlerGirls" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-3 font-bold text-slate-900">Kid’s Girls</td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_KidsGirls" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_KidsGirls" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_KidsGirls" value="0" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td id="priceTotalActual_KidsGirls" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
+              <td id="priceTotalBarcode_KidsGirls" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
+              <td id="priceDiff_KidsGirls" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-3 font-bold text-slate-900">Girl’s</td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Girls" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Girls" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Girls" value="0" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td id="priceTotalActual_Girls" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
+              <td id="priceTotalBarcode_Girls" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
+              <td id="priceDiff_Girls" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-3 font-bold text-slate-900">Women’s</td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Womens" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Womens" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Womens" value="0" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td id="priceTotalActual_Womens" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
+              <td id="priceTotalBarcode_Womens" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
+              <td id="priceDiff_Womens" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
             </tr>
           </tbody>
           <tfoot>
@@ -1578,6 +1568,8 @@
     const manualInputContainer = document.getElementById('manualInputContainer');
     const manualConsumptionInput = document.getElementById('manualConsumption');
     const cadInputsSection = document.getElementById('cadInputsSection');
+    const fabricGsmInput = document.getElementById('fabricGsm');
+    const consumptionDisplayUnit = document.getElementById('consumptionDisplayUnit');
 
     const cadConsumptionInput = document.getElementById('cadConsumption');
     const cadWidthInput = document.getElementById('cadWidth');
@@ -1646,6 +1638,7 @@
       const W_act = parseFloat(actualWidthInput.value) || 0;
       const S_L = parseFloat(lengthShrinkageInput.value) || 0;
       const S_W = parseFloat(widthShrinkageInput.value) || 0;
+      const fabricGsm = parseFloat(fabricGsmInput.value) || 0;
       const inhouseYards = parseFloat(inhouseFabricInput.value) || 0;
       const orderQty = parseFloat(orderQtyInput.value) || 0;
       const manualVal = parseFloat(manualConsumptionInput.value) || 0;
@@ -1681,6 +1674,13 @@
       const consumptionDozen = finalConsumption * 12;
       const consumption100 = finalConsumption * 100;
       const consumptionMeter = finalConsumption * 0.9144;
+      const effectiveWidthMeters = W_act * (1 - (S_W / 100)) * 0.0254;
+      const consumptionKg = (consumptionMeter * effectiveWidthMeters * fabricGsm) / 1000;
+      const displayUnit = consumptionDisplayUnit.value;
+      const displayConsumption = displayUnit === 'kg' ? consumptionKg : finalConsumption;
+      const displayDozen = displayConsumption * 12;
+      const display100 = displayConsumption * 100;
+      const displayUnitLabel = displayUnit === 'kg' ? 'kg' : 'yd';
 
       // Production Capacity from In-Housed Fabric
       const possiblePcs = finalConsumption > 0 ? Math.floor(inhouseYards / finalConsumption) : 0;
@@ -1695,10 +1695,14 @@
       const customRollsCount = Math.ceil(customReqYards / 100);
 
       // Update Main Highlight Card
-      resActualConsumption.textContent = finalConsumption.toFixed(3);
+      resActualConsumption.textContent = displayConsumption.toFixed(3);
+      document.getElementById('resConsumptionUnit').textContent = displayUnitLabel + '/pcs';
+      document.getElementById('resCustomActiveRateUnit').textContent = displayUnitLabel + '/pcs';
       resConsumptionMeter.textContent = consumptionMeter.toFixed(3) + " m";
-      resConsumptionDozen.textContent = consumptionDozen.toFixed(3) + " yd";
-      resConsumption100.textContent = consumption100.toFixed(3) + " yd";
+      resConsumptionDozen.textContent = displayDozen.toFixed(3) + " " + displayUnitLabel;
+      resConsumption100.textContent = display100.toFixed(3) + " " + displayUnitLabel;
+      const kgHint = document.getElementById('consumptionKgHint');
+      if (kgHint) kgHint.textContent = displayUnit === 'kg' && fabricGsm <= 0 ? 'Enter Fabric Weight (GSM) to calculate kg.' : '';
 
       // Update In-housed Fabric Capacity Card
       lblInhouseYards.textContent = inhouseYards.toLocaleString('en-US');
@@ -1714,10 +1718,11 @@
       }
 
       // Update Custom Pcs Fabric Estimator Card
-      resCustomReqYards.textContent = customReqYards.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + " yd";
+      const customReqKg = (customReqMeters * effectiveWidthMeters * fabricGsm) / 1000;
+      resCustomReqYards.textContent = (displayUnit === 'kg' ? customReqKg : customReqYards).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + " " + displayUnitLabel;
       resCustomReqMeters.textContent = customReqMeters.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + " m";
       resCustomDozens.textContent = customDozensVal;
-      resCustomActiveRate.textContent = finalConsumption.toFixed(3);
+      resCustomActiveRate.textContent = displayConsumption.toFixed(3);
       resCustomRolls.textContent = customRollsCount + " Rolls";
 
       // Update Parameter Breakdown Table
@@ -1732,9 +1737,10 @@
     }
 
     // Event listeners
-    [cadConsumptionInput, cadWidthInput, actualWidthInput, lengthShrinkageInput, widthShrinkageInput, inhouseFabricInput, orderQtyInput, manualConsumptionInput, customTargetPcsInput].forEach(input => {
+    [cadConsumptionInput, cadWidthInput, actualWidthInput, lengthShrinkageInput, widthShrinkageInput, fabricGsmInput, inhouseFabricInput, orderQtyInput, manualConsumptionInput, customTargetPcsInput].forEach(input => {
       input.addEventListener('input', calculateConsumption);
     });
+    consumptionDisplayUnit.addEventListener('change', calculateConsumption);
 
     btnPrint.addEventListener('click', () => {
       window.print();
@@ -2281,7 +2287,7 @@
     // SECTION 3: COMMERCIAL PRICING & BARCODE LOGIC (Excel Sheet 2)
     // ==========================================
 
-    const pricingCategories = ['Toddler', 'Kids', 'Boys', 'Mens', 'R'];
+    const pricingCategories = ['Toddler', 'Kids', 'Boys', 'Mens', 'R', 'ToddlerGirls', 'KidsGirls', 'Girls', 'Womens'];
     const btnSyncPoFromBreakdown = document.getElementById('btnSyncPoFromBreakdown');
     const btnResetPricingDefaults = document.getElementById('btnResetPricingDefaults');
 
@@ -2433,6 +2439,11 @@
       document.getElementById('priceActual_R').value = 0;
       document.getElementById('priceBarcode_R').value = 0;
       document.getElementById('pricePoQty_R').value = 0;
+      ['ToddlerGirls', 'KidsGirls', 'Girls', 'Womens'].forEach(category => {
+        document.getElementById(`priceActual_${category}`).value = 0;
+        document.getElementById(`priceBarcode_${category}`).value = 0;
+        document.getElementById(`pricePoQty_${category}`).value = 0;
+      });
 
       calculatePricing();
     });
