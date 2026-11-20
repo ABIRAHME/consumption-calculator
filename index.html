@@ -1138,12 +1138,14 @@
           </div>
           <div class="flex items-center gap-2">
             <label for="consumptionDisplayUnit" class="sr-only">Consumption display unit</label>
-            <select id="consumptionDisplayUnit" class="bg-white/10 border border-white/20 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-white focus:ring-2 focus:ring-blue-300">
+            <select id="consumptionDisplayUnit"
+              class="bg-white/10 border border-white/20 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-white focus:ring-2 focus:ring-blue-300">
               <option value="yd" class="text-slate-900">Show in yd</option>
               <option value="kg" class="text-slate-900">Show in kg</option>
             </select>
             <span id="badgeConsumptionSource"
-              class="bg-amber-400/20 text-amber-300 text-xs px-2.5 py-1 rounded-full border border-amber-400/30 font-semibold">Calculated Formula</span>
+              class="bg-amber-400/20 text-amber-300 text-xs px-2.5 py-1 rounded-full border border-amber-400/30 font-semibold">Calculated
+              Formula</span>
           </div>
         </div>
 
@@ -1389,6 +1391,13 @@
       </div>
     </div>
 
+    <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Retail pricing category view">
+      <span class="text-xs font-bold text-slate-600 mr-1">View:</span>
+      <button type="button" data-pricing-view="All" aria-pressed="true" class="pricing-view-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white">All 8 categories</button>
+      <button type="button" data-pricing-view="Male" aria-pressed="false" class="pricing-view-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-300">Male</button>
+      <button type="button" data-pricing-view="Female" aria-pressed="false" class="pricing-view-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-300">Female</button>
+    </div>
+
     <!-- Quick Stats Cards -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
       <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
@@ -1397,7 +1406,7 @@
           <span id="kpiPricingPoQty">742</span>
           <span class="text-xs text-slate-500 font-semibold">pcs</span>
         </div>
-        <span class="text-[10px] text-slate-400">All nine categories</span>
+        <span class="text-[10px] text-slate-400">All eight categories</span>
       </div>
 
       <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
@@ -1431,6 +1440,24 @@
       </div>
     </div>
 
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+      <h3 class="text-sm font-bold text-slate-900 mb-3">Male vs Female Category Comparison</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left">
+          <thead><tr class="text-[11px] uppercase text-slate-500 border-b border-slate-200">
+            <th class="py-2 px-3">Category</th><th class="py-2 px-3 text-right">PO Quantity</th>
+            <th class="py-2 px-3 text-right">Retail Actual</th><th class="py-2 px-3 text-right">Barcode Proposed</th>
+            <th class="py-2 px-3 text-right">Realization Difference</th>
+          </tr></thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr><td class="py-2 px-3 font-bold">Male</td><td id="pricingMaleQty" class="py-2 px-3 text-right">0</td><td id="pricingMaleActual" class="py-2 px-3 text-right">0</td><td id="pricingMaleBarcode" class="py-2 px-3 text-right">0</td><td id="pricingMaleDiff" class="py-2 px-3 text-right">0</td></tr>
+            <tr><td class="py-2 px-3 font-bold">Female</td><td id="pricingFemaleQty" class="py-2 px-3 text-right">0</td><td id="pricingFemaleActual" class="py-2 px-3 text-right">0</td><td id="pricingFemaleBarcode" class="py-2 px-3 text-right">0</td><td id="pricingFemaleDiff" class="py-2 px-3 text-right">0</td></tr>
+            <tr class="bg-slate-50 font-bold"><td class="py-2 px-3">Male − Female</td><td id="pricingGenderQtyDiff" class="py-2 px-3 text-right">0</td><td id="pricingGenderActualDiff" class="py-2 px-3 text-right">0</td><td id="pricingGenderBarcodeDiff" class="py-2 px-3 text-right">0</td><td id="pricingGenderRealizationDiff" class="py-2 px-3 text-right">0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- Pricing Table Card -->
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-3 mb-4 gap-2">
@@ -1461,81 +1488,126 @@
           <tbody id="pricingTableBody" class="divide-y divide-slate-100 text-slate-800 font-medium">
             <tr class="hover:bg-slate-50 transition">
               <td class="py-2.5 px-3 font-bold text-slate-900">Toddler</td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Toddler" value="1483.31" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Toddler" value="1690" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Toddler" value="75" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Toddler"
+                  value="1483.31"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Toddler" value="1690"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Toddler" value="75"
+                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
               <td id="priceTotalActual_Toddler" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
               <td id="priceTotalBarcode_Toddler" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
               <td id="priceDiff_Toddler" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
             </tr>
             <tr class="hover:bg-slate-50 transition">
               <td class="py-2.5 px-3 font-bold text-slate-900">Kids</td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Kids" value="1762.41" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Kids" value="1890" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Kids" value="105" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Kids" value="1762.41"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Kids" value="1890"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Kids" value="105"
+                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
               <td id="priceTotalActual_Kids" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
               <td id="priceTotalBarcode_Kids" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
               <td id="priceDiff_Kids" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
             </tr>
             <tr class="hover:bg-slate-50 transition">
               <td class="py-2.5 px-3 font-bold text-slate-900">Boys</td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Boys" value="2011.57" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Boys" value="2190" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Boys" value="120" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Boys" value="2011.57"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Boys" value="2190"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Boys" value="120"
+                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
               <td id="priceTotalActual_Boys" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
               <td id="priceTotalBarcode_Boys" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
               <td id="priceDiff_Boys" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
             </tr>
             <tr class="hover:bg-slate-50 transition">
               <td class="py-2.5 px-3 font-bold text-slate-900">Mens</td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Mens" value="2787.16" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Mens" value="2990" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Mens" value="442" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Mens" value="2787.16"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Mens" value="2990"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Mens" value="442"
+                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
               <td id="priceTotalActual_Mens" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
               <td id="priceTotalBarcode_Mens" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
               <td id="priceDiff_Mens" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
             </tr>
             <tr class="hover:bg-slate-50 transition">
-              <td class="py-2.5 px-3 font-bold text-slate-900">R</td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_R" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_R" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_R" value="0" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td id="priceTotalActual_R" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
-              <td id="priceTotalBarcode_R" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
-              <td id="priceDiff_R" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition">
-              <td class="py-2.5 px-3 font-bold text-slate-900">Toddler’s Girls</td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_ToddlerGirls" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_ToddlerGirls" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_ToddlerGirls" value="0" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td id="priceTotalActual_ToddlerGirls" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
-              <td id="priceTotalBarcode_ToddlerGirls" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
+              <td class="py-2.5 px-3 font-bold text-slate-900">Toddler Girls</td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_ToddlerGirls"
+                  value="0"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_ToddlerGirls" value="0"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_ToddlerGirls" value="0"
+                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td id="priceTotalActual_ToddlerGirls" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0
+              </td>
+              <td id="priceTotalBarcode_ToddlerGirls" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0
+              </td>
               <td id="priceDiff_ToddlerGirls" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
             </tr>
             <tr class="hover:bg-slate-50 transition">
-              <td class="py-2.5 px-3 font-bold text-slate-900">Kid’s Girls</td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_KidsGirls" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_KidsGirls" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_KidsGirls" value="0" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td id="priceTotalActual_KidsGirls" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
-              <td id="priceTotalBarcode_KidsGirls" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
+              <td class="py-2.5 px-3 font-bold text-slate-900">Kids Girls</td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_KidsGirls" value="0"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_KidsGirls" value="0"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_KidsGirls" value="0"
+                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td id="priceTotalActual_KidsGirls" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0
+              </td>
+              <td id="priceTotalBarcode_KidsGirls" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0
+              </td>
               <td id="priceDiff_KidsGirls" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
             </tr>
             <tr class="hover:bg-slate-50 transition">
-              <td class="py-2.5 px-3 font-bold text-slate-900">Girl’s</td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Girls" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Girls" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Girls" value="0" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 font-bold text-slate-900">Girls</td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Girls" value="0"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Girls" value="0"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Girls" value="0"
+                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
               <td id="priceTotalActual_Girls" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
               <td id="priceTotalBarcode_Girls" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
               <td id="priceDiff_Girls" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
             </tr>
             <tr class="hover:bg-slate-50 transition">
-              <td class="py-2.5 px-3 font-bold text-slate-900">Women’s</td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Womens" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Womens" value="0" class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
-              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Womens" value="0" class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input"></td>
+              <td class="py-2.5 px-3 font-bold text-slate-900">Womens</td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="0.01" id="priceActual_Womens" value="0"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="priceBarcode_Womens" value="0"
+                  class="w-24 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
+              <td class="py-2.5 px-3 text-right"><input type="number" step="1" id="pricePoQty_Womens" value="0"
+                  class="w-20 px-2 py-1 text-right bg-slate-50 border border-slate-300 rounded font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 pricing-input">
+              </td>
               <td id="priceTotalActual_Womens" class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">0</td>
               <td id="priceTotalBarcode_Womens" class="py-2.5 px-3 text-right font-mono font-bold text-blue-700">0</td>
               <td id="priceDiff_Womens" class="py-2.5 px-3 text-right font-mono font-bold text-slate-500">0</td>
@@ -2287,7 +2359,10 @@
     // SECTION 3: COMMERCIAL PRICING & BARCODE LOGIC (Excel Sheet 2)
     // ==========================================
 
-    const pricingCategories = ['Toddler', 'Kids', 'Boys', 'Mens', 'R', 'ToddlerGirls', 'KidsGirls', 'Girls', 'Womens'];
+    const pricingCategories = ['Toddler', 'Kids', 'Boys', 'Mens', 'ToddlerGirls', 'KidsGirls', 'Girls', 'Womens'];
+    const malePricingCategories = ['Toddler', 'Kids', 'Boys', 'Mens'];
+    const femalePricingCategories = ['ToddlerGirls', 'KidsGirls', 'Girls', 'Womens'];
+    let activePricingView = 'All';
     const btnSyncPoFromBreakdown = document.getElementById('btnSyncPoFromBreakdown');
     const btnResetPricingDefaults = document.getElementById('btnResetPricingDefaults');
 
@@ -2295,6 +2370,10 @@
       let sumPoQty = 0;
       let grandTotalActual = 0;
       let grandTotalBarcode = 0;
+      const genderTotals = {
+        Male: { qty: 0, actual: 0, barcode: 0 },
+        Female: { qty: 0, actual: 0, barcode: 0 }
+      };
 
       pricingCategories.forEach(cat => {
         const actualInput = document.getElementById(`priceActual_${cat}`);
@@ -2310,9 +2389,19 @@
         const totalBarcode = Math.round(barcodePrice * qty * 0.9);
         const diff = totalBarcode - totalActual;
 
-        sumPoQty += qty;
-        grandTotalActual += totalActual;
-        grandTotalBarcode += totalBarcode;
+        const gender = malePricingCategories.includes(cat) ? 'Male' : 'Female';
+        const groupTotals = genderTotals[gender];
+        groupTotals.qty += qty;
+        groupTotals.actual += totalActual;
+        groupTotals.barcode += totalBarcode;
+
+        const row = document.getElementById(`priceActual_${cat}`).closest('tr');
+        row.hidden = activePricingView !== 'All' && activePricingView !== gender;
+        if (activePricingView === 'All' || activePricingView === gender) {
+          sumPoQty += qty;
+          grandTotalActual += totalActual;
+          grandTotalBarcode += totalBarcode;
+        }
 
         document.getElementById(`priceTotalActual_${cat}`).textContent = totalActual.toLocaleString('en-US');
         document.getElementById(`priceTotalBarcode_${cat}`).textContent = totalBarcode.toLocaleString('en-US');
@@ -2328,6 +2417,27 @@
           diffEl.textContent = "0";
           diffEl.className = "py-2.5 px-3 text-right font-mono font-bold text-slate-500";
         }
+      });
+
+      const genderDiffs = {};
+      ['Male', 'Female'].forEach(gender => {
+        const totals = genderTotals[gender];
+        const diff = totals.barcode - totals.actual;
+        genderDiffs[gender] = diff;
+        document.getElementById(`pricing${gender}Qty`).textContent = Math.round(totals.qty).toLocaleString('en-US');
+        document.getElementById(`pricing${gender}Actual`).textContent = totals.actual.toLocaleString('en-US');
+        document.getElementById(`pricing${gender}Barcode`).textContent = totals.barcode.toLocaleString('en-US');
+        document.getElementById(`pricing${gender}Diff`).textContent = `${diff > 0 ? '+' : ''}${diff.toLocaleString('en-US')}`;
+      });
+      const genderDiffValues = {
+        Qty: genderTotals.Male.qty - genderTotals.Female.qty,
+        Actual: genderTotals.Male.actual - genderTotals.Female.actual,
+        Barcode: genderTotals.Male.barcode - genderTotals.Female.barcode,
+        Realization: genderDiffs.Male - genderDiffs.Female
+      };
+      Object.entries(genderDiffValues).forEach(([key, value]) => {
+        const rounded = key === 'Qty' ? Math.round(value) : value;
+        document.getElementById(`pricingGender${key}Diff`).textContent = `${rounded > 0 ? '+' : ''}${rounded.toLocaleString('en-US')}`;
       });
 
       const grandDiff = grandTotalBarcode - grandTotalActual;
@@ -2412,6 +2522,20 @@
       }
     }
 
+    document.querySelectorAll('.pricing-view-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        activePricingView = button.dataset.pricingView;
+        document.querySelectorAll('.pricing-view-btn').forEach(viewButton => {
+          const selected = viewButton === button;
+          viewButton.setAttribute('aria-pressed', selected ? 'true' : 'false');
+          viewButton.className = selected
+            ? 'pricing-view-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white'
+            : 'pricing-view-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-300';
+        });
+        calculatePricing();
+      });
+    });
+
     // Attach listeners to pricing inputs
     const pricingInputs = document.querySelectorAll('#retailPricingSection input');
     pricingInputs.forEach(input => {
@@ -2436,9 +2560,6 @@
       document.getElementById('priceBarcode_Mens').value = 2990;
       document.getElementById('pricePoQty_Mens').value = 442;
 
-      document.getElementById('priceActual_R').value = 0;
-      document.getElementById('priceBarcode_R').value = 0;
-      document.getElementById('pricePoQty_R').value = 0;
       ['ToddlerGirls', 'KidsGirls', 'Girls', 'Womens'].forEach(category => {
         document.getElementById(`priceActual_${category}`).value = 0;
         document.getElementById(`priceBarcode_${category}`).value = 0;
